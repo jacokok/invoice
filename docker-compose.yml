@@ -1,9 +1,9 @@
 version: "3.7"
 services:
-  postgres:
+  pg:
     image: docker.io/postgres:16
-    hostname: postgres
-    container_name: postgres
+    hostname: pg
+    container_name: pg
     restart: unless-stopped
     volumes:
       - db_data:/var/lib/postgresql/data
