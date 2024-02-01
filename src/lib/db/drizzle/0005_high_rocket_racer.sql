@@ -1,0 +1,1 @@
+ALTER TABLE "detail" ALTER COLUMN "rate" SET DATA TYPE integer;

@@ -1,8 +1,8 @@
 import { db } from "$lib/db/db.server";
-import { kv } from "$lib/db/schema";
+import { detail } from "$lib/db/schema";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async () => {
-	const result = await db.select().from(kv);
-	return { result };
+	const results = await db.select().from(detail);
+	return { detail: results };
 }) satisfies PageServerLoad;
