@@ -2,12 +2,16 @@ import { db } from "$lib/server";
 import { eq } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
 import { timeTable } from "$lib/server/schema";
+import { superValidate } from "sveltekit-superforms";
+import { zod } from "sveltekit-superforms/adapters";
+import { createTimeSchema } from "./schema";
 
 export const load = (async ({ locals }) => {
 	const data = await db.query.timeTable.findMany({
 		where: eq(timeTable.userId, locals.user?.id ?? ""),
 	});
-	return { data };
+	const form = await superValidate(zod(createTimeSchema));
+	return { form, data };
 }) satisfies PageServerLoad;
 
 export const actions = {

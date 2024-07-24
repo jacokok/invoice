@@ -1,5 +1,4 @@
 <script>
-	import Header from "$lib/components/Header.svelte";
 	import { Button, Card } from "@kayord/ui";
 	import CodeIcon from "lucide-svelte/icons/code";
 </script>

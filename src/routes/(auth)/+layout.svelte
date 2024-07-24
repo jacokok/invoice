@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
-	let { children }: { children?: Snippet } = $props();
+	let { children } = $props();
 </script>
 
-{#if children}
-	{@render children()}
-{/if}
+{@render children()}

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
 	import "../app.pcss";
-	let { children }: { children?: Snippet } = $props();
+	import { Toaster } from "@kayord/ui";
+
+	let { children } = $props();
 </script>
 
-{#if children}
-	{@render children()}
-{/if}
+<Toaster />
+{@render children()}
