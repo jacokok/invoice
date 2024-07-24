@@ -3,17 +3,21 @@ import { eq } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
 import { timeTable } from "$lib/server/schema";
 
-export const load = (async () => {
-	const data = await db.query.timeTable.findMany();
+export const load = (async ({ locals }) => {
+	const data = await db.query.timeTable.findMany({
+		where: eq(timeTable.userId, locals.user?.id ?? ""),
+	});
 	return { data };
 }) satisfies PageServerLoad;
 
 export const actions = {
-	create: async () => {
+	create: async ({ locals }) => {
 		try {
+			if (locals.user?.id == null) throw new Error("User not logged id");
+
 			// const selectedDate = Math.floor(Date.now() / 1000);
 			await db.insert(timeTable).values({
-				userId: "icmyvdsyacgb6fij",
+				userId: locals.user?.id,
 				date: new Date(),
 				description: "Test",
 				hours: 1,
