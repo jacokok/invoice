@@ -27,7 +27,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.user = user;
 	event.locals.session = session;
 
-	if (event.route.id?.startsWith("/app")) {
+	if (event.route.id?.startsWith("/(protected)")) {
 		if (!user) redirect(302, "/login");
 		// if (!user.verified) redirect(302, '/auth/verify/email');
 	}

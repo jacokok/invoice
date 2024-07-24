@@ -5,11 +5,12 @@
 	export let data: PageData;
 </script>
 
-<div>{JSON.stringify(data)}</div>
-
 <Card.Root class="m-4">
 	<Card.Header>
 		<Card.Title>{data.user?.name}</Card.Title>
 		<Card.Description>{data.user?.email}</Card.Description>
 	</Card.Header>
+	<Card.Content>
+		<div>{JSON.stringify(data)}</div>
+	</Card.Content>
 </Card.Root>
