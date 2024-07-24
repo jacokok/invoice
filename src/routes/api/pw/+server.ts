@@ -1,8 +1,11 @@
 import type { RequestHandler } from "./$types";
-import { chromium, firefox, devices } from "playwright";
+import { CHROMIUM_PATH } from "$env/static/private";
+import { chromium, devices } from "playwright";
 
 export const GET: RequestHandler = async () => {
-	const browser = await firefox.launch({ headless: false, slowMo: 50 });
+	const browser = await chromium.launch({
+		executablePath: CHROMIUM_PATH,
+	});
 	const context = await browser.newContext(devices["Desktop Firefox"]);
 	const page = await context.newPage();
 
