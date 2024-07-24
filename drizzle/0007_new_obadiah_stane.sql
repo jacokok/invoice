@@ -1,0 +1,1 @@
+ALTER TABLE `time` ADD `date` integer NOT NULL;

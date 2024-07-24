@@ -6,16 +6,7 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<div class="m-4">Home Page</div>
-
-<Button href="/kv">KV</Button>
-
-<Card.Root class="m-4">
-	<Card.Header>
-		<Card.Title>Test</Card.Title>
-		<Card.Description>Test</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		{JSON.stringify(data.user)}
-	</Card.Content>
-</Card.Root>
+<div class="m-4 flex items-center gap-2">
+	<Button href="/kv">KV</Button>
+	<Button href="/time">Time</Button>
+</div>

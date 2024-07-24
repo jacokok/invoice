@@ -22,3 +22,13 @@ export const kv = sqliteTable("kv", {
 	id: text("key").primaryKey(),
 	name: text("value").notNull(),
 });
+
+export const timeTable = sqliteTable("time", {
+	id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+	description: text("description").notNull(),
+	hours: integer("hours", { mode: "number" }).notNull(),
+	date: integer("date", { mode: "timestamp" }).notNull(),
+	userId: text("user_id")
+		.notNull()
+		.references(() => userTable.id),
+});
