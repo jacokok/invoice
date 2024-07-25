@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { invalidateAll } from "$app/navigation";
 	import { Avatar, DropdownMenu } from "@kayord/ui";
+	import type { User } from "lucia";
+
+	interface Props {
+		user?: User;
+	}
+
+	let { user }: Props = $props();
 
 	const logout = async () => {
 		await fetch("/logout", { method: "POST" });
@@ -19,6 +26,7 @@
 		<DropdownMenu.Trigger>
 			<Avatar.Root>
 				<Avatar.Fallback class="bg-primary text-primary-foreground">KJ</Avatar.Fallback>
+				<Avatar.Image src={user?.avatar} />
 			</Avatar.Root>
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content>

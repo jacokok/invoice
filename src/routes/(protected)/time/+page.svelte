@@ -1,89 +1,66 @@
 <script lang="ts">
-	import { Button, Calendar, Card, Form, Input, Textarea, toast } from "@kayord/ui";
+	import { AlertDialog, Button, Card, DropdownMenu, Table } from "@kayord/ui";
 	import type { PageData } from "./$types";
-	import SuperDebug, { superForm, superValidate } from "sveltekit-superforms";
-	import { zodClient } from "sveltekit-superforms/adapters";
-	import { createTimeSchema } from "./schema";
-	import { CalendarDate, getLocalTimeZone, parseDate, today } from "@internationalized/date";
+	import CreateTime from "./CreateTime.svelte";
+	import EllipsisIcon from "lucide-svelte/icons/ellipsis";
+	import EditIcon from "lucide-svelte/icons/pencil";
+	import TrashIcon from "lucide-svelte/icons/trash";
+	import DeleteTime from "./DeleteTime.svelte";
+	import Pagination from "$lib/components/Pagination.svelte";
 
 	let { data }: { data: PageData } = $props();
 
-	const form = superForm(data.form, {
-		validators: zodClient(createTimeSchema),
-	});
-
-	const { form: formData, enhance } = form;
-
-	let placeholder = $state(today(getLocalTimeZone()));
-
-	let value: CalendarDate | undefined = $state(undefined);
+	let deleteConfirm = $state(false);
+	let deleteId = $state(0);
 </script>
 
-<Card.Root class="mx-auto w-full max-w-xl">
-	<Card.Header>
-		<Card.Title>Time</Card.Title>
-		<Card.Description>Log time worked</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<form use:enhance method="POST" action="?/create" class="flex flex-col gap-3">
-			<Form.Field {form} name="date">
-				<Form.Control let:attrs>
-					<Form.Label>Date</Form.Label>
-					<div class="flex">
-						<Calendar
-							{value}
-							bind:placeholder
-							class="rounded-md border"
-							onValueChange={(v: CalendarDate) => {
-								$formData.date = v.toString();
-								value = parseDate(v.toString());
-							}}
-						/>
-					</div>
-					<input hidden value={$formData.date} name={attrs.name} />
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-			<Form.Field {form} name="description">
-				<Form.Control let:attrs>
-					<Form.Label>Description</Form.Label>
-					<Textarea {...attrs} bind:value={$formData.description} />
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-			<Form.Field {form} name="hours">
-				<Form.Control let:attrs>
-					<Form.Label>Hours</Form.Label>
-					<Input type="number" {...attrs} bind:value={$formData.hours} />
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-			<SuperDebug data={$formData} />
-			<Button type="submit" class="mt-2 self-start">Create</Button>
-		</form>
-	</Card.Content>
-</Card.Root>
+<div class="m-2">
+	<div class="flex w-full items-center justify-between py-2">
+		<div></div>
+		<CreateTime {data} />
+	</div>
 
-<div class="m-4">
-	<form method="POST" action="?/create">
-		<Button type="submit">Create</Button>
-	</form>
+	<div class="rounded-md border">
+		<Table.Root>
+			<Table.Header>
+				<Table.Row>
+					<Table.Head class="w-[100px]">Date</Table.Head>
+					<Table.Head class="w-[100px]">Hours</Table.Head>
+					<Table.Head class="w-full">Description</Table.Head>
+					<Table.Head>Options</Table.Head>
+				</Table.Row>
+			</Table.Header>
+			<Table.Body>
+				{#each data.data as d, i (i)}
+					<Table.Row>
+						<Table.Cell class="font-medium">{d.date.toLocaleDateString()}</Table.Cell>
+						<Table.Cell>{d.hours}</Table.Cell>
+						<Table.Cell class="whitespace-pre-line">{d.id} {d.description}</Table.Cell>
+						<Table.Cell class="text-center">
+							<DropdownMenu.Root>
+								<DropdownMenu.Trigger><EllipsisIcon class="size-5" /></DropdownMenu.Trigger>
+								<DropdownMenu.Content>
+									<DropdownMenu.Item>
+										<EditIcon class="mr-2 size-5" /> Edit
+									</DropdownMenu.Item>
+									<DropdownMenu.Item
+										onclick={() => {
+											deleteConfirm = true;
+											deleteId = d.id;
+										}}
+									>
+										<TrashIcon class="mr-2 size-5" /> Delete
+									</DropdownMenu.Item>
+								</DropdownMenu.Content>
+							</DropdownMenu.Root>
+						</Table.Cell>
+					</Table.Row>
+				{/each}
+			</Table.Body>
+		</Table.Root>
+	</div>
+	<div class="flex justify-center p-2">
+		<Pagination count={data.total} perPage={data.limit} />
+	</div>
 </div>
-
-{#each data.data as d}
-	<Card.Root class="m-4">
-		<Card.Header>
-			<Card.Title>{d.id}</Card.Title>
-			<Card.Description>{d.description}</Card.Description>
-		</Card.Header>
-		<Card.Content>
-			Date: {d.date}
-		</Card.Content>
-		<Card.Footer>
-			<form method="POST" action="?/delete">
-				<input type="hidden" name="id" value={d.id} />
-				<Button type="submit" variant="destructive">Delete</Button>
-			</form>
-		</Card.Footer>
-	</Card.Root>
-{/each}
+<DeleteTime bind:id={deleteId} bind:open={deleteConfirm} />
