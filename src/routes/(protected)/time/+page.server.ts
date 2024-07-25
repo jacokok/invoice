@@ -4,7 +4,7 @@ import type { PageServerLoad } from "./$types";
 import { timeTable } from "$lib/server/schema";
 import { fail, message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
-import { createTimeSchema } from "./schema";
+import { insertTimeSchema } from "$lib/dbSchemas";
 
 export const load = (async ({ url, locals }) => {
 	const limit = 10;
@@ -22,13 +22,13 @@ export const load = (async ({ url, locals }) => {
 		where: eq(timeTable.userId, locals.user?.id ?? ""),
 	});
 
-	const form = await superValidate(zod(createTimeSchema));
+	const form = await superValidate(zod(insertTimeSchema));
 	return { form, data, total, limit: limit, skip };
 }) satisfies PageServerLoad;
 
 export const actions = {
 	create: async ({ locals, request }) => {
-		const form = await superValidate(request, zod(createTimeSchema));
+		const form = await superValidate(request, zod(insertTimeSchema));
 
 		if (locals.user?.id == null) {
 			return fail(500, { message: "User not found" });

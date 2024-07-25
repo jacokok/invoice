@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { Button, Calendar, Card, Dialog, Form, Input, Textarea, toast } from "@kayord/ui";
+	import { Button, Calendar, Dialog, Form, Input, Textarea, toast } from "@kayord/ui";
 	import type { PageData } from "./$types";
 	import { superForm } from "sveltekit-superforms";
 	import { zodClient } from "sveltekit-superforms/adapters";
-	import { createTimeSchema } from "./schema";
 	import CreateIcon from "lucide-svelte/icons/plus";
 	import { CalendarDate, getLocalTimeZone, parseDate, today } from "@internationalized/date";
+	import { insertTimeSchema } from "$lib/dbSchemas";
 
 	let { data }: { data: PageData } = $props();
 
 	let open = $state(false);
 
 	const form = superForm(data.form, {
-		validators: zodClient(createTimeSchema),
+		validators: zodClient(insertTimeSchema),
 		onUpdated({ form }) {
 			if (form.valid) {
 				open = false;
