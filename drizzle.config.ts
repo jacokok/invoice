@@ -8,7 +8,7 @@ if (!DATABASE_URL) {
 }
 
 export default {
-	schema: "./src/lib/server/schema.ts",
+	schema: "./src/lib/schema.ts",
 	out: "drizzle",
 	driver: "turso",
 	dialect: "sqlite",

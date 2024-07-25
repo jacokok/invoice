@@ -1,7 +1,7 @@
 import { db } from "$lib/server";
 import { count, desc, eq } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
-import { timeTable } from "$lib/server/schema";
+import { timeTable } from "$lib/schema";
 import { fail, message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import { insertTimeSchema } from "$lib/dbSchemas";

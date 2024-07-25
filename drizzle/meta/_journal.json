@@ -57,6 +57,20 @@
       "when": 1721828375584,
       "tag": "0007_new_obadiah_stane",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1721940430048,
+      "tag": "0008_thick_anita_blake",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1721943478054,
+      "tag": "0009_silent_william_stryker",
+      "breakpoints": true
     }
   ]
 }
