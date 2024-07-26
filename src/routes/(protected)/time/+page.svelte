@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { AlertDialog, Button, Card, DropdownMenu, Table } from "@kayord/ui";
+	import { Button, DropdownMenu, Table } from "@kayord/ui";
 	import type { PageData } from "./$types";
-	import CreateTime from "./CreateTime.svelte";
 	import EllipsisIcon from "lucide-svelte/icons/ellipsis";
 	import EditIcon from "lucide-svelte/icons/pencil";
 	import TrashIcon from "lucide-svelte/icons/trash";
 	import DeleteTime from "./DeleteTime.svelte";
 	import Pagination from "$lib/components/Pagination.svelte";
+	import CreateIcon from "lucide-svelte/icons/plus";
 
 	let { data }: { data: PageData } = $props();
 
@@ -17,7 +17,9 @@
 <div class="m-2">
 	<div class="flex w-full items-center justify-between py-2">
 		<div></div>
-		<CreateTime {data} />
+		<Button href="/time/update">
+			<CreateIcon class="mr-2 size-5" />Create
+		</Button>
 	</div>
 
 	<div class="rounded-md border">
@@ -26,21 +28,24 @@
 				<Table.Row>
 					<Table.Head class="w-[100px]">Date</Table.Head>
 					<Table.Head class="w-[100px]">Hours</Table.Head>
+					<Table.Head class="w-[100px]">Project</Table.Head>
 					<Table.Head class="w-full">Description</Table.Head>
 					<Table.Head>Options</Table.Head>
 				</Table.Row>
 			</Table.Header>
+
 			<Table.Body>
 				{#each data.data as d, i (i)}
 					<Table.Row>
 						<Table.Cell class="font-medium">{d.date.toLocaleDateString()}</Table.Cell>
 						<Table.Cell>{d.hours}</Table.Cell>
-						<Table.Cell class="whitespace-pre-line">{d.id} {d.description}</Table.Cell>
+						<Table.Cell>{d.project.name}</Table.Cell>
+						<Table.Cell class="whitespace-pre-line">{d.description}</Table.Cell>
 						<Table.Cell class="text-center">
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger><EllipsisIcon class="size-5" /></DropdownMenu.Trigger>
 								<DropdownMenu.Content>
-									<DropdownMenu.Item>
+									<DropdownMenu.Item href={`/time/update/${d.id}`}>
 										<EditIcon class="mr-2 size-5" /> Edit
 									</DropdownMenu.Item>
 									<DropdownMenu.Item
@@ -58,6 +63,9 @@
 				{/each}
 			</Table.Body>
 		</Table.Root>
+		{#if data.data.length <= 0}
+			<div class="p-2 text-muted-foreground">No data available</div>
+		{/if}
 	</div>
 	<div class="flex justify-center p-2">
 		<Pagination count={data.total} perPage={data.limit} />

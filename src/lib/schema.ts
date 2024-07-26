@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
 
 export const userTable = sqliteTable("user", {
@@ -31,6 +32,9 @@ export const timeTable = sqliteTable("time", {
 	userId: text("user_id")
 		.notNull()
 		.references(() => userTable.id),
+	projectId: integer("project_id", { mode: "number" })
+		.notNull()
+		.references(() => projectTable.id),
 });
 
 export const userDetailTable = sqliteTable("user_detail", {
@@ -59,3 +63,7 @@ export const projectTable = sqliteTable("project", {
 		.notNull()
 		.references(() => userTable.id),
 });
+
+export const projectRelations = relations(timeTable, ({ one }) => ({
+	project: one(projectTable, { fields: [timeTable.projectId], references: [projectTable.id] }),
+}));
