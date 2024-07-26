@@ -20,7 +20,6 @@ export const load = (async ({ params, locals }) => {
 
 export const actions = {
 	upsert: async ({ locals, request }) => {
-		console.log("reached this");
 		const form = await superValidate(request, zod(insertProjectSchema));
 		try {
 			if (locals.user?.id == null) {
