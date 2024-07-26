@@ -1,5 +1,5 @@
 import { createInsertSchema } from "drizzle-zod";
-import { timeTable, userDetailTable } from "./schema";
+import { projectTable, timeTable, userDetailTable } from "./schema";
 
 const insertTimeSchema = createInsertSchema(timeTable, {
 	description: (s) => s.description.min(1, "Please enter a description"),
@@ -18,4 +18,11 @@ const insertUserDetailSchema = createInsertSchema(userDetailTable, {
 	name: (s) => s.name.min(1, "Please enter name"),
 });
 
-export { insertTimeSchema, insertUserDetailSchema };
+const insertProjectSchema = createInsertSchema(projectTable, {
+	name: (s) => s.name.min(1, "Please enter a name"),
+	billName: (s) => s.billName.min(1, "Please enter a bill Name"),
+	billAddress: (s) => s.billAddress.min(1, "Please enter a bill Address"),
+	rate: (s) => s.rate.min(1, "Please enter a rate"),
+});
+
+export { insertTimeSchema, insertUserDetailSchema, insertProjectSchema };

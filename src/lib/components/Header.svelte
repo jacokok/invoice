@@ -33,7 +33,7 @@
 			<DropdownMenu.Group>
 				<DropdownMenu.Label>My Account</DropdownMenu.Label>
 				<DropdownMenu.Separator />
-				<DropdownMenu.Item href="/profile">Profile</DropdownMenu.Item>
+				<DropdownMenu.Item href="/profile/userDetail">Profile</DropdownMenu.Item>
 				<DropdownMenu.Item on:click={logout}>Logout</DropdownMenu.Item>
 			</DropdownMenu.Group>
 		</DropdownMenu.Content>

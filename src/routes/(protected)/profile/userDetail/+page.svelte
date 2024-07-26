@@ -1,17 +1,16 @@
 <script lang="ts">
-	import { Avatar, Badge, Button, Card, Form, Input, Textarea, toast } from "@kayord/ui";
+	import { Button, Card, Form, Input, Textarea, toast } from "@kayord/ui";
 	import type { PageData } from "./$types";
-	import { defaults, superForm } from "sveltekit-superforms";
+	import { superForm } from "sveltekit-superforms";
 	import { zodClient } from "sveltekit-superforms/adapters";
 	import { insertUserDetailSchema } from "$lib/dbSchemas";
 
-	export let data: PageData;
+	let { data } = $props();
 
 	const form = superForm(data.form, {
 		validators: zodClient(insertUserDetailSchema),
 		resetForm: false,
 		onUpdated({ form }) {
-			console.log("on updated", form);
 			if (form.valid) {
 				toast(form.message);
 			}
@@ -21,20 +20,6 @@
 </script>
 
 <div class="m-4 flex flex-col gap-2">
-	<Card.Root>
-		<Card.Header class="flex gap-2">
-			<Avatar.Root>
-				<Avatar.Fallback class="bg-primary text-primary-foreground">KJ</Avatar.Fallback>
-				<Avatar.Image src={data.user?.avatar} />
-			</Avatar.Root>
-			<div>
-				<Card.Title>{data.user?.name}</Card.Title>
-				<Card.Description>{data.user?.email}</Card.Description>
-				<Badge>{data.user?.role}</Badge>
-			</div>
-		</Card.Header>
-	</Card.Root>
-
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>User Settings</Card.Title>
