@@ -17,6 +17,8 @@ export const POST: RequestHandler = async ({ request }) => {
 const htmlToPDF = async (params: Params) => {
 	const browser = await chromium.launch({
 		executablePath: CHROMIUM_PATH,
+		// TODO: Remove headless
+		headless: false,
 	});
 	const page = await browser.newPage();
 
