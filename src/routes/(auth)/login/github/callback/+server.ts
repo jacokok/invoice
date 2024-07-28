@@ -4,7 +4,7 @@ import { github, lucia } from "$lib/server/auth";
 
 import type { RequestEvent } from "@sveltejs/kit";
 import { db } from "$lib/server";
-import { userTable } from "$lib/server/schema";
+import { userTable } from "$lib/schema";
 import { eq } from "drizzle-orm";
 
 export async function GET(event: RequestEvent): Promise<Response> {

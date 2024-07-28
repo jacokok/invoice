@@ -2,18 +2,25 @@ import type { RequestHandler } from "./$types";
 import { CHROMIUM_PATH } from "$env/static/private";
 import { chromium } from "playwright";
 
-export const GET: RequestHandler = async () => {
-	const result = await htmlToPDF();
-	return new Response(result);
+interface Params {
+	userId: string;
+	date: string;
+}
+
+export const POST: RequestHandler = async ({ request }) => {
+	const params = (await request.json()) as Params;
+	// const result = JSON.stringify(params);
+	const pdf = await htmlToPDF(params);
+	return new Response(pdf);
 };
 
-const htmlToPDF = async () => {
+const htmlToPDF = async (params: Params) => {
 	const browser = await chromium.launch({
 		executablePath: CHROMIUM_PATH,
 	});
 	const page = await browser.newPage();
 
-	await page.goto("http://localhost:5173/pdf");
+	await page.goto(`http://localhost:5173/pdf/${params.userId}/${params.date}`);
 	const result = await page.pdf({
 		format: "A4",
 		printBackground: true,
