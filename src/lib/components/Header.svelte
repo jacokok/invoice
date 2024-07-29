@@ -2,6 +2,7 @@
 	import { invalidateAll } from "$app/navigation";
 	import { Avatar, DropdownMenu } from "@kayord/ui";
 	import type { User } from "lucia";
+	import Logo from "./Logo.svelte";
 
 	interface Props {
 		user?: User;
@@ -18,7 +19,7 @@
 <div class="flex w-full items-center justify-between bg-secondary p-2">
 	<a href="/">
 		<div class="flex items-center gap-2">
-			<img src="/icon.svg" alt="logo" class="size-5" />
+			<Logo />
 			Invoice
 		</div>
 	</a>
@@ -34,6 +35,7 @@
 				<DropdownMenu.Label>My Account</DropdownMenu.Label>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item href="/profile/userDetail">Profile</DropdownMenu.Item>
+				<DropdownMenu.Item href="/settings">Settings</DropdownMenu.Item>
 				<DropdownMenu.Item on:click={logout}>Logout</DropdownMenu.Item>
 			</DropdownMenu.Group>
 		</DropdownMenu.Content>

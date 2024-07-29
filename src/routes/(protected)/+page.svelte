@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Button, Card, toast } from "@kayord/ui";
-
+	import { Button, toast } from "@kayord/ui";
+	import { mode } from "@kayord/ui/mode-watcher";
 	import type { PageData } from "./$types";
 	import { isError } from "$lib/types";
 
@@ -8,7 +8,12 @@
 
 	const downloadPDF = async () => {
 		try {
-			const params = { userId: 123, date: 123 };
+			const params = {
+				userId: data.user?.id,
+				date: "2024-06-01",
+				projectId: 1,
+				colorScheme: $mode,
+			};
 
 			const response = await fetch("/api/pdf", {
 				method: "POST",
@@ -31,24 +36,6 @@
 			toast.error(message);
 		}
 	};
-
-	// const downloadPDF = () => {
-	// 	fetch("/api/pdf", {
-	// 		data: {
-	// 			userId: 123,
-	// 			date: 123,
-	// 		},
-	// 		method: "POST",
-	// 	}).then((res) => {
-	// 		return res
-	// 			.arrayBuffer()
-	// 			.then((res) => {
-	// 				const blob = new Blob([res], { type: "application/pdf" });
-	// 				saveAs(blob, "invoice.pdf");
-	// 			})
-	// 			.catch((e) => alert(e));
-	// 	});
-	// };
 </script>
 
 <div class="m-4 flex items-center gap-2">

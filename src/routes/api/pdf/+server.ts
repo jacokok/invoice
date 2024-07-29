@@ -4,7 +4,9 @@ import { chromium } from "playwright";
 
 interface Params {
 	userId: string;
+	projectId: string;
 	date: string;
+	colorScheme: "light" | "dark";
 }
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -21,12 +23,15 @@ const htmlToPDF = async (params: Params) => {
 		headless: false,
 	});
 	const page = await browser.newPage();
-
-	await page.goto(`http://localhost:5173/pdf/${params.userId}/${params.date}`);
+	await page.emulateMedia({ media: "screen" });
+	await page.emulateMedia({ colorScheme: params.colorScheme });
+	await page.goto(`http://localhost:5173/pdf/${params.userId}/${params.projectId}/${params.date}`);
 	const result = await page.pdf({
-		format: "A4",
+		// format: "",
+		// preferCSSPageSize: true,
+		// height: "100wh",
 		printBackground: true,
-		margin: { left: "0px", top: "0px", right: "0px", bottom: "0px" },
+		// margin: { left: "0px", top: "20px", right: "0px", bottom: "0px" },
 	});
 	await browser.close();
 	return result;

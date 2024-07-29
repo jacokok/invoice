@@ -23,6 +23,9 @@ const insertProjectSchema = createInsertSchema(projectTable, {
 	billName: (s) => s.billName.min(1, "Please enter a bill Name"),
 	billAddress: (s) => s.billAddress.min(1, "Please enter a bill Address"),
 	rate: (s) => s.rate.min(1, "Please enter a rate"),
+	primaryColorDark: (s) => s.primaryColorDark.min(1, "Please pick a primary color for dark theme"),
+	primaryColorLight: (s) =>
+		s.primaryColorLight.min(1, "Please pick a primary color for light theme"),
 });
 
 export { insertTimeSchema, insertUserDetailSchema, insertProjectSchema };

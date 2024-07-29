@@ -7,6 +7,7 @@
 	import DeleteTime from "./DeleteTime.svelte";
 	import Pagination from "$lib/components/Pagination.svelte";
 	import CreateIcon from "lucide-svelte/icons/plus";
+	import DownloadIcon from "lucide-svelte/icons/download";
 
 	let { data }: { data: PageData } = $props();
 
@@ -15,8 +16,10 @@
 </script>
 
 <div class="m-2">
-	<div class="flex w-full items-center justify-between py-2">
-		<div></div>
+	<div class="flex w-full items-center justify-between py-2 pb-4">
+		<Button href="/time/update">
+			<DownloadIcon class="mr-2 size-5" />Generate PDF
+		</Button>
 		<Button href="/time/update">
 			<CreateIcon class="mr-2 size-5" />Create
 		</Button>

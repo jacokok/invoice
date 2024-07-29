@@ -61,6 +61,20 @@
 					<Form.Description>Rand per hour</Form.Description>
 					<Form.FieldErrors />
 				</Form.Field>
+				<Form.Field {form} name="primaryColorDark">
+					<Form.Control let:attrs>
+						<Form.Label>Primary Color (dark theme)</Form.Label>
+						<Input type="color" {...attrs} bind:value={$formData.primaryColorDark} />
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="primaryColorLight">
+					<Form.Control let:attrs>
+						<Form.Label>Primary Color (light theme)</Form.Label>
+						<Input type="color" {...attrs} bind:value={$formData.primaryColorLight} />
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
 				<div class="flex items-center justify-between">
 					<Button variant="secondary" href="/profile/project">Cancel</Button>
 					<Button type="submit">

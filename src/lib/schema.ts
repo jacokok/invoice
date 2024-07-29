@@ -59,6 +59,8 @@ export const projectTable = sqliteTable("project", {
 	billName: text("bill_name").notNull(),
 	billAddress: text("bill_address").notNull(),
 	rate: real("rate").notNull(),
+	primaryColorLight: text("primary_color_light").notNull().default("#18181b"),
+	primaryColorDark: text("primary_color_dark").notNull().default("#fafafa"),
 	userId: text("user_id")
 		.notNull()
 		.references(() => userTable.id),
