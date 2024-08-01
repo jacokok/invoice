@@ -117,7 +117,7 @@
 			<Card.Description>Click Download to download the invoice</Card.Description>
 		</Card.Header>
 		<Card.Content>
-			<form use:enhance method="POST" action="?/validate" class="flex flex-col gap-3">
+			<form use:enhance method="POST" action="?/download" class="flex flex-col gap-3">
 				<input type="hidden" name="userId" bind:value={$formData.userId} />
 				<Form.Field {form} name="date">
 					<Form.Control let:attrs>
@@ -202,7 +202,7 @@
 				</Form.Field>
 
 				<div class="flex items-center justify-between">
-					<Button variant="secondary" href="/time">Cancel</Button>
+					<Button variant="secondary" href="/">Cancel</Button>
 					<div>
 						<Button type="submit">{$formData.isPreview ? "Preview" : "Download"}</Button>
 					</div>

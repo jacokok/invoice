@@ -20,7 +20,7 @@
 		<Button href="/pdfOptions">
 			<DownloadIcon class="mr-2 size-5" />Generate PDF
 		</Button>
-		<Button href="/time/update">
+		<Button href="/update">
 			<CreateIcon class="mr-2 size-5" />Create
 		</Button>
 	</div>
@@ -48,7 +48,7 @@
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger><EllipsisIcon class="size-5" /></DropdownMenu.Trigger>
 								<DropdownMenu.Content>
-									<DropdownMenu.Item href={`/time/update/${d.id}`}>
+									<DropdownMenu.Item href={`/update/${d.id}`}>
 										<EditIcon class="mr-2 size-5" /> Edit
 									</DropdownMenu.Item>
 									<DropdownMenu.Item

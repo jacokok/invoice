@@ -18,7 +18,7 @@
 		onUpdated({ form }) {
 			if (form.valid) {
 				open = false;
-				goto("/time");
+				goto("/");
 				toast(form.message);
 			}
 		},
@@ -115,7 +115,7 @@
 					<Form.FieldErrors />
 				</Form.Field>
 				<div class="flex items-center justify-between">
-					<Button variant="secondary" href="/time">Cancel</Button>
+					<Button variant="secondary" href="/">Cancel</Button>
 					<Button type="submit">
 						{#if id}
 							Update

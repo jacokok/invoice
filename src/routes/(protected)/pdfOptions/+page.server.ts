@@ -1,7 +1,7 @@
 import { db } from "$lib/server";
 import { eq } from "drizzle-orm";
 import type { PageServerLoad } from "./$types";
-import { projectTable } from "$lib/schema";
+import { projectTable, userDetailTable } from "$lib/schema";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import { dateToYM, schema, type FormSchema } from "./schema";
@@ -30,8 +30,23 @@ export const load = (async ({ locals }) => {
 }) satisfies PageServerLoad;
 
 export const actions = {
-	validate: async ({ request }) => {
+	download: async ({ request }) => {
 		const form = await superValidate(request, zod(schema));
-		return message(form, "Validated");
+
+		if (!form.data.isPreview) {
+			// Increment download count
+			const detail = await db.query.userDetailTable.findFirst({
+				where: eq(userDetailTable.userId, form.data.userId),
+			});
+			if (detail?.invoiceNumber) {
+				await db
+					.update(userDetailTable)
+					.set({
+						invoiceNumber: detail.invoiceNumber + 1,
+					})
+					.where(eq(userDetailTable.userId, form.data.userId));
+			}
+		}
+		return message(form, "Download");
 	},
 };
