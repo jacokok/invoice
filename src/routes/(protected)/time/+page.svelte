@@ -17,7 +17,7 @@
 
 <div class="m-2">
 	<div class="flex w-full items-center justify-between py-2 pb-4">
-		<Button href="/time/update">
+		<Button href="/pdfOptions">
 			<DownloadIcon class="mr-2 size-5" />Generate PDF
 		</Button>
 		<Button href="/time/update">

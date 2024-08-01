@@ -27,3 +27,6 @@ export const firstAndLastDay = (dateOrString?: Date | string) => {
 
 	return { firstDay, lastDay };
 };
+
+export const toPascalCase = (str: string): string =>
+	str.replace(/(\w)(\w*)/g, (_, $1, $2) => $1.toUpperCase() + $2.toLowerCase());

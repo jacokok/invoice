@@ -28,7 +28,9 @@
 
 	let placeholder = $state(today(getLocalTimeZone()));
 
-	let value: CalendarDate | undefined = $state(undefined);
+	const value = $derived(
+		$formData.date ? parseDate($formData.date.toISOString().substring(0, 10)) : undefined
+	);
 
 	const getProjectLabel = (id: number) => {
 		const project = data.projects.filter((x) => x.id === id);
@@ -69,7 +71,6 @@
 								class="rounded-md border"
 								onValueChange={(v: CalendarDate) => {
 									$formData.date = v.toDate("Africa/Johannesburg");
-									value = parseDate(v.toString());
 								}}
 							/>
 						</div>

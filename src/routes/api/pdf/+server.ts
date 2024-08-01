@@ -25,7 +25,9 @@ const htmlToPDF = async (params: Params) => {
 	const page = await browser.newPage();
 	await page.emulateMedia({ media: "screen" });
 	await page.emulateMedia({ colorScheme: params.colorScheme });
-	await page.goto(`http://localhost:5173/pdf/${params.userId}/${params.projectId}/${params.date}`);
+	await page.goto(
+		`http://localhost:5173/pdf/${params.userId}/${params.projectId}/${encodeURIComponent(params.date)}`
+	);
 	const result = await page.pdf({
 		// format: "",
 		// preferCSSPageSize: true,

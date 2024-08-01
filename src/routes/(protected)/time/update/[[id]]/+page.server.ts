@@ -7,7 +7,7 @@ import { zod } from "sveltekit-superforms/adapters";
 import { insertTimeSchema } from "$lib/dbSchemas";
 
 export const load = (async ({ params, locals }) => {
-	const item = await db.query.timeTable.findFirst({
+	let item = await db.query.timeTable.findFirst({
 		where: and(
 			eq(timeTable.id, Number(params.id ?? 0)),
 			eq(timeTable.userId, locals.user?.id ?? "")
@@ -17,6 +17,18 @@ export const load = (async ({ params, locals }) => {
 	const projects = await db.query.projectTable.findMany({
 		where: eq(projectTable.userId, locals.user?.id ?? ""),
 	});
+
+	// Default Values
+	if (item == null) {
+		item = {
+			date: new Date(),
+			id: 0,
+			userId: locals.user?.id ?? "",
+			description: "",
+			hours: 1,
+			projectId: projects.length > 0 ? projects[0].id : 0,
+		};
+	}
 
 	const form = await superValidate(item, zod(insertTimeSchema));
 	return { form, item, projects };

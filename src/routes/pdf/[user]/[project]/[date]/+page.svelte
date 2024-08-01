@@ -75,43 +75,42 @@
 <Section titleLeft="item details" titleRight="hours" {textStyle} />
 {#each data.time as time (time.id)}
 	<Item date={time.date} description={time.description} hours={time.hours} />
-	<Item date={time.date} description={time.description} hours={time.hours} />
-	<Item date={time.date} description={time.description} hours={time.hours} />
-	<Item date={time.date} description={time.description} hours={time.hours} />
-	<Item date={time.date} description={time.description} hours={time.hours} />
 {/each}
 
-<Section titleLeft="Banking Details" titleRight="Summary" {textStyle} />
+<div class="break-inside-avoid">
+	<Section titleLeft="Banking Details" titleRight="Summary" {textStyle} />
+	<div class="h-1" style={backgroundStyle}></div>
 
-<div class="mx-6 my-6 flex items-center justify-between">
-	<div class="grid grid-cols-2 gap-x-6">
-		<div class="text-muted-foreground">Bank</div>
-		<div>{data.userDetail.bankName}</div>
-		<div class="text-muted-foreground">Account Number</div>
-		<div>{data.userDetail.bankAccountNumber}</div>
-		<div class="text-muted-foreground">Branch Code</div>
-		<div>{data.userDetail.bankBranchCode}</div>
-		<div class="text-muted-foreground">Name</div>
-		<div>{data.userDetail.bankHolderName}</div>
-	</div>
-	<div style={textStyle}>
-		<div class="flex items-center justify-between gap-12">
-			<div>TOTAL HOURS</div>
-			<div>{totalHours}</div>
+	<div class="mx-6 my-6 flex items-center justify-between">
+		<div class="grid grid-cols-2 gap-x-6">
+			<div class="text-muted-foreground">Bank</div>
+			<div>{data.userDetail.bankName}</div>
+			<div class="text-muted-foreground">Account Number</div>
+			<div>{data.userDetail.bankAccountNumber}</div>
+			<div class="text-muted-foreground">Branch Code</div>
+			<div>{data.userDetail.bankBranchCode}</div>
+			<div class="text-muted-foreground">Name</div>
+			<div>{data.userDetail.bankHolderName}</div>
 		</div>
-		<div class="flex items-center justify-between gap-12">
-			<div>RATE</div>
-			<div>R{data.project.rate}</div>
-		</div>
-		<div class="mt-3 flex flex-col gap-1">
-			<Separator class="h-1" style={backgroundStyle} />
-			<div class="flex items-center justify-between text-2xl">
-				<div>TOTAL</div>
-				<div class="font-bold">R{total}</div>
+		<div style={textStyle}>
+			<div class="flex items-center justify-between gap-12">
+				<div>TOTAL HOURS</div>
+				<div>{totalHours}</div>
 			</div>
-			<Separator class="h-1" style={backgroundStyle} />
+			<div class="flex items-center justify-between gap-12">
+				<div>RATE</div>
+				<div>R{data.project.rate}</div>
+			</div>
+			<div class="mt-3 flex flex-col gap-1">
+				<Separator class="h-1" style={backgroundStyle} />
+				<div class="flex items-center justify-between text-2xl">
+					<div>TOTAL</div>
+					<div class="font-bold">R{total}</div>
+				</div>
+				<Separator class="h-1" style={backgroundStyle} />
+			</div>
 		</div>
 	</div>
-</div>
 
-<div class="h-1" style={backgroundStyle}></div>
+	<div class="h-1" style={backgroundStyle}></div>
+</div>
