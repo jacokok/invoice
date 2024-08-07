@@ -1,6 +1,6 @@
 import type { RequestHandler } from "./$types";
 import { CHROMIUM_PATH } from "$env/static/private";
-import { chromium } from "playwright";
+import { chromium } from "playwright-core";
 
 interface Params {
 	userId: string;
