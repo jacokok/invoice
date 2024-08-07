@@ -17,3 +17,5 @@ pm dev
 pnpm exec playwright install firefox
 pnpm exec playwright install
 ```
+
+## Cloudflare
