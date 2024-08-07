@@ -1,6 +1,7 @@
 import { OAuth2RequestError } from "arctic";
 import { generateIdFromEntropySize } from "lucia";
 import { github, lucia } from "$lib/server/auth";
+import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "$env/static/private";
 
 import { json, type RequestEvent } from "@sveltejs/kit";
 import { db } from "$lib/server";
@@ -19,19 +20,19 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	}
 
 	try {
-		const tokens = await github.validateAuthorizationCode(code);
-		const githubUserResponse = await fetch("https://api.github.com/user", {
-			headers: {
-				Authorization: `Bearer ${tokens.accessToken}`,
-			},
-		});
-		const githubUser: GitHubUser = await githubUserResponse.json();
+		// const tokens = await github.validateAuthorizationCode(code);
+		// const githubUserResponse = await fetch("https://api.github.com/user", {
+		// 	headers: {
+		// 		Authorization: `Bearer ${tokens.accessToken}`,
+		// 	},
+		// });
+		// const githubUser: GitHubUser = await githubUserResponse.json();
 
-		const existingUser = await db.query.userTable.findFirst({
-			where: eq(userTable.githubId, githubUser.id.toString()),
-		});
+		// const existingUser = await db.query.userTable.findFirst({
+		// 	where: eq(userTable.githubId, githubUser.id.toString()),
+		// });
 
-		return json({ code: code, state, storedState, tokens, githubUserResponse, existingUser });
+		return json({ code: code, state, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET });
 
 		// if (existingUser) {
 		// 	const session = await lucia.createSession(existingUser.id, {});
