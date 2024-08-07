@@ -6,7 +6,12 @@ const config = {
 		alias: {
 			$lib: "./src/lib",
 		},
-		adapter: adapter(),
+		adapter: adapter({
+			routes: {
+				include: ["/*"],
+				exclude: ["<all>"],
+			},
+		}),
 	},
 };
 
