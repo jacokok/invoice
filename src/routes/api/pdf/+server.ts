@@ -1,5 +1,5 @@
 import type { RequestHandler } from "./$types";
-import { CHROMIUM_PATH, APP_URL } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { chromium } from "playwright-core";
 
 interface Params {
@@ -19,7 +19,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 const htmlToPDF = async (params: Params) => {
 	const browser = await chromium.launch({
-		executablePath: CHROMIUM_PATH,
+		executablePath: env.CHROMIUM_PATH,
 		// TODO: Remove headless
 		headless: true,
 	});
@@ -27,7 +27,7 @@ const htmlToPDF = async (params: Params) => {
 	await page.emulateMedia({ media: "screen" });
 	await page.emulateMedia({ colorScheme: params.colorScheme });
 	await page.goto(
-		`${APP_URL}/pdf/${params.userId}/${params.projectId}/${encodeURIComponent(params.date)}`
+		`${env.APP_URL}/pdf/${params.userId}/${params.projectId}/${encodeURIComponent(params.date)}`
 	);
 	const result = await page.pdf({
 		// format: "",

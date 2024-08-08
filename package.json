@@ -28,7 +28,6 @@
 		"@types/uuid": "^10.0.0",
 		"arctic": "^1.9.2",
 		"autoprefixer": "^10.4.20",
-		"dotenv": "^16.4.5",
 		"drizzle-kit": "^0.23.2",
 		"drizzle-orm": "^0.32.2",
 		"drizzle-zod": "^0.5.1",

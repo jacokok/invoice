@@ -1,11 +1,11 @@
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { chromium } from "playwright-core";
-import { CHROMIUM_PATH } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 
 export const GET: RequestHandler = async () => {
 	const browser = await chromium.launch({
-		executablePath: CHROMIUM_PATH,
+		executablePath: env.CHROMIUM_PATH,
 		headless: true,
 	});
 

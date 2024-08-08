@@ -1,6 +1,4 @@
 import type { Config } from "drizzle-kit";
-import * as dotenv from "dotenv";
-dotenv.config();
 
 const { DATABASE_URL, DATABASE_AUTH_TOKEN } = process.env;
 if (!DATABASE_URL) {

@@ -1,7 +1,7 @@
 import { Lucia } from "lucia";
 // import { dev } from "$app/environment";
 import { GitHub } from "arctic";
-import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { adapter } from "./adapter";
 
 export const lucia = new Lucia(adapter, {
@@ -40,4 +40,4 @@ interface DatabaseUserAttributes {
 	email: string;
 }
 
-export const github = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET);
+export const github = new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET);
