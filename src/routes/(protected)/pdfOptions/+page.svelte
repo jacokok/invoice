@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { Button, Card, Form, Input, Select, Switch, toast } from "@kayord/ui";
+	import { Button, Card, Form, Loader, Select, Switch, toast } from "@kayord/ui";
 	import type { PageData } from "./$types";
-	import { defaults, superForm } from "sveltekit-superforms";
-	import { zod, zodClient } from "sveltekit-superforms/adapters";
-	import { z } from "zod";
+	import { superForm } from "sveltekit-superforms";
+	import { zodClient } from "sveltekit-superforms/adapters";
 	import { isError } from "$lib/types";
 	import { toPascalCase } from "$lib/util";
 	import { dateToYM, schema, type FormSchema } from "./schema";
@@ -11,8 +10,11 @@
 
 	let { data }: { data: PageData } = $props();
 
+	let isLoading = $state(false);
+
 	const downloadPDF = async (data: FormSchema) => {
 		try {
+			isLoading = true;
 			const params = {
 				userId: data.userId,
 				date: data.date,
@@ -39,6 +41,8 @@
 		} catch (err) {
 			const message = isError(err) ? err.message : "Unknown error";
 			toast.error(message);
+		} finally {
+			isLoading = false;
 		}
 	};
 
@@ -204,7 +208,10 @@
 				<div class="flex items-center justify-between">
 					<Button variant="secondary" href="/">Cancel</Button>
 					<div>
-						<Button type="submit">{$formData.isPreview ? "Preview" : "Download"}</Button>
+						<Button disabled={isLoading} type="submit">
+							<Loader class="size-4" {isLoading} />
+							{$formData.isPreview ? "Preview" : "Download"}
+						</Button>
 					</div>
 				</div>
 			</form>

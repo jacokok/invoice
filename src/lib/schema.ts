@@ -19,11 +19,6 @@ export const sessionTable = sqliteTable("session", {
 	expiresAt: integer("expires_at").notNull(),
 });
 
-export const kv = sqliteTable("kv", {
-	id: text("key").primaryKey(),
-	name: text("value").notNull(),
-});
-
 export const timeTable = sqliteTable("time", {
 	id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
 	description: text("description").notNull(),

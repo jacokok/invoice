@@ -1,29 +1,17 @@
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import puppeteer from "@cloudflare/puppeteer";
+import { chromium } from "playwright-core";
+import { CHROMIUM_PATH } from "$env/static/private";
 
-export const GET: RequestHandler = async ({ platform }) => {
-	const browser = await puppeteer.launch(platform?.env.MYBROWSER);
-	// const browser = await puppeteer.launch(MYBROWSER, { fetch });
+export const GET: RequestHandler = async () => {
+	const browser = await chromium.launch({
+		executablePath: CHROMIUM_PATH,
+		headless: true,
+	});
+
 	const page = await browser.newPage();
 	await page.goto("https://example.com");
-	const metrics = await page.metrics();
+	const html = await page.innerHTML("body");
 	await browser.close();
-	return json(metrics);
+	return json({ html });
 };
-
-// const htmlToPDF = async () => {
-// 	const browser = await chromium.launch({
-// 		executablePath: CHROMIUM_PATH,
-// 	});
-// 	const page = await browser.newPage();
-
-// 	await page.goto("http://localhost:5173/pdf");
-// 	const result = await page.pdf({
-// 		format: "A4",
-// 		printBackground: true,
-// 		margin: { left: "0px", top: "0px", right: "0px", bottom: "0px" },
-// 	});
-// 	await browser.close();
-// 	return result;
-// };
