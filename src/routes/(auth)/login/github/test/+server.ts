@@ -20,8 +20,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	}
 
 	try {
-		return json({ code: code, state, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET });
-		// const tokens = await github.validateAuthorizationCode(code);
+		const tokens = await github.validateAuthorizationCode(code);
+		return json({ code: code, state, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, tokens });
 		// const githubUserResponse = await fetch("https://api.github.com/user", {
 		// 	headers: {
 		// 		Authorization: `Bearer ${tokens.accessToken}`,
