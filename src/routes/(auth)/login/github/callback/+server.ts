@@ -26,6 +26,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		const githubUserResponse = await event.fetch("https://api.github.com/user", {
 			headers: {
 				Authorization: `Bearer ${tokens.accessToken}`,
+				"User-Agent": "invoice",
 			},
 		});
 
