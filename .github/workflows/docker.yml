@@ -23,7 +23,7 @@ jobs:
       - name: Docker Push
         run: docker push ghcr.io/jacokok/invoice:latest
 
-      - name: executing remote ssh commands using ssh key
+      - name: Deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
@@ -31,4 +31,6 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             cd kontainer
-            docker ps
+            docker compose pull
+            docker compose rollout invoice
+            docker system prune -f
