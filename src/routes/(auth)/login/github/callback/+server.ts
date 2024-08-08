@@ -2,7 +2,7 @@ import { OAuth2RequestError } from "arctic";
 import { generateIdFromEntropySize } from "lucia";
 import { github, lucia } from "$lib/server/auth";
 
-import type { RequestEvent } from "@sveltejs/kit";
+import { json, type RequestEvent } from "@sveltejs/kit";
 import { db } from "$lib/server";
 import { userTable } from "$lib/schema";
 import { eq } from "drizzle-orm";
@@ -13,9 +13,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	const storedState = event.cookies.get("github_oauth_state") ?? null;
 
 	if (!code || !state || !storedState || state !== storedState) {
-		return new Response(null, {
-			status: 400,
-		});
+		return json({ code, state, storedState, message: "Need code and state" }, { status: 400 });
 	}
 
 	try {
@@ -65,17 +63,12 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			},
 		});
 	} catch (e) {
-		console.log(e);
 		// the specific error message depends on the provider
 		if (e instanceof OAuth2RequestError) {
 			// invalid code
-			return new Response(null, {
-				status: 400,
-			});
+			return json({ error: e, message: "Invalid code" }, { status: 400 });
 		}
-		return new Response(null, {
-			status: 500,
-		});
+		return json({ error: e, message: "Critical Error" }, { status: 500 });
 	}
 }
 
