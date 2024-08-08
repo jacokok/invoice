@@ -12,7 +12,7 @@ jobs:
         run: docker login
 
       - name: Build Docker image
-        run: docker build . --tag ghcr.io/doink/invoice:latest
+        run: docker build . --tag ghcr.io/jacokok/invoice:latest
 
       - name: Docker Push
-        run: docker push ghcr.io/doink/invoice:latest
+        run: docker push ghcr.io/jacokok/invoice:latest
