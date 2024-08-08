@@ -7,5 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build the Docker image
+
+      - name: Login
         run: docker login
+
+      - name: Build Docker image
+        run: docker build . --tag ghcr.io/doink/invoice:latest
+
+      - name: Docker Push
+        run: docker push ghcr.io/doink/invoice:latest
