@@ -15,6 +15,8 @@
 		"migrate": "drizzle-kit push --config drizzle.config.ts"
 	},
 	"devDependencies": {
+		"@cloudflare/puppeteer": "^0.0.11",
+		"@cloudflare/workers-types": "^4.20240806.0",
 		"@internationalized/date": "^3.5.5",
 		"@kayord/tw-plugin": "^1.0.2",
 		"@kayord/ui": "^0.9.12",

@@ -6,6 +6,11 @@ declare global {
 			user: import("lucia").User | null;
 			session: import("lucia").Session | null;
 		}
+		interface Platform {
+			env: Env;
+			cf: CfProperties;
+			ctx: ExecutionContext;
+		}
 	}
 }
 

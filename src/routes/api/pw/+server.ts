@@ -1,10 +1,15 @@
+import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-// import { CHROMIUM_PATH } from "$env/static/private";
-// import { chromium } from "playwright-core";
+import puppeteer from "@cloudflare/puppeteer";
 
-export const GET: RequestHandler = async () => {
-	// const result = await htmlToPDF();
-	return new Response("w");
+export const GET: RequestHandler = async ({ platform }) => {
+	const browser = await puppeteer.launch(platform?.env.MYBROWSER);
+	// const browser = await puppeteer.launch(MYBROWSER, { fetch });
+	const page = await browser.newPage();
+	await page.goto("https://example.com");
+	const metrics = await page.metrics();
+	await browser.close();
+	return json(metrics);
 };
 
 // const htmlToPDF = async () => {

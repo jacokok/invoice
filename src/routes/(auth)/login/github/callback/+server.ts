@@ -17,12 +17,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		return json({ code, state, storedState, message: "Need code and state" }, { status: 400 });
 	}
 
-	const progress: Array<string> = [];
-
 	try {
-		progress.push("start");
 		const tokens = await github.validateAuthorizationCode(code);
-		progress.push("tokens " + JSON.stringify(tokens));
 		const githubUserResponse = await event.fetch("https://api.github.com/user", {
 			headers: {
 				Authorization: `Bearer ${tokens.accessToken}`,
@@ -30,16 +26,11 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			},
 		});
 
-		progress.push("githubUserResponse " + githubUserResponse.status.toString());
 		const githubUser: GitHubUser = await githubUserResponse.json();
-
-		progress.push("githubUser " + JSON.stringify(githubUser));
 
 		const existingUser = await db.query.userTable.findFirst({
 			where: eq(userTable.githubId, githubUser.id.toString()),
 		});
-
-		progress.push("existingUser " + JSON.stringify(existingUser));
 
 		if (existingUser) {
 			const session = await lucia.createSession(existingUser.id, {});
@@ -49,9 +40,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				...sessionCookie.attributes,
 			});
 		} else {
-			progress.push("generateIdFromEntropySize");
 			const userId = generateIdFromEntropySize(10); // 16 characters long
-			progress.push("userId " + userId);
 
 			// Replace this with your own DB client.
 			await db.insert(userTable).values({
@@ -70,21 +59,19 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				...sessionCookie.attributes,
 			});
 		}
-
-		return json({ message: "It worked", progress }, { status: 400 });
-		// return new Response(null, {
-		// 	status: 302,
-		// 	headers: {
-		// 		Location: "/",
-		// 	},
-		// });
+		return new Response(null, {
+			status: 302,
+			headers: {
+				Location: "/",
+			},
+		});
 	} catch (e) {
 		// the specific error message depends on the provider
 		if (e instanceof OAuth2RequestError) {
 			// invalid code
-			return json({ error: e, message: "Invalid code", progress }, { status: 400 });
+			return json({ error: e, message: "Invalid code" }, { status: 400 });
 		}
-		return json({ error: e, message: "Critical Error", progress }, { status: 500 });
+		return json({ error: e, message: "Critical Error" }, { status: 500 });
 	}
 }
 
