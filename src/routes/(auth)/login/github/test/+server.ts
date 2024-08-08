@@ -20,7 +20,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	}
 
 	try {
-		const tokens = await github.validateAuthorizationCode(code);
+		return json({ code: code, state, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET });
+		// const tokens = await github.validateAuthorizationCode(code);
 		// const githubUserResponse = await fetch("https://api.github.com/user", {
 		// 	headers: {
 		// 		Authorization: `Bearer ${tokens.accessToken}`,
@@ -31,8 +32,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		// const existingUser = await db.query.userTable.findFirst({
 		// 	where: eq(userTable.githubId, githubUser.id.toString()),
 		// });
-
-		return json({ code: code, state, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, tokens });
 
 		// if (existingUser) {
 		// 	const session = await lucia.createSession(existingUser.id, {});
