@@ -23,12 +23,13 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		progress.push("start");
 		const tokens = await github.validateAuthorizationCode(code);
 		progress.push("tokens " + JSON.stringify(tokens));
-		const githubUserResponse = await fetch("https://api.github.com/user", {
+		const githubUserResponse = await event.fetch("https://api.github.com/user", {
 			headers: {
 				Authorization: `Bearer ${tokens.accessToken}`,
 			},
 		});
-		progress.push("githubUserResponse " + JSON.stringify(githubUserResponse));
+
+		progress.push("githubUserResponse " + githubUserResponse.status.toString());
 		const githubUser: GitHubUser = await githubUserResponse.json();
 
 		progress.push("githubUser " + JSON.stringify(githubUser));
@@ -68,12 +69,14 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				...sessionCookie.attributes,
 			});
 		}
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: "/",
-			},
-		});
+
+		return json({ message: "It worked", progress }, { status: 400 });
+		// return new Response(null, {
+		// 	status: 302,
+		// 	headers: {
+		// 		Location: "/",
+		// 	},
+		// });
 	} catch (e) {
 		// the specific error message depends on the provider
 		if (e instanceof OAuth2RequestError) {
