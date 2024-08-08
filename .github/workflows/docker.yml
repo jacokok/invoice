@@ -32,5 +32,5 @@ jobs:
           script: |
             cd kontainer
             docker compose pull
-            docker compose rollout invoice
+            docker rollout invoice
             docker system prune -f
