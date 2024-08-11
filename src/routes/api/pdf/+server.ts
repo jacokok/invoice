@@ -1,6 +1,6 @@
 import type { RequestHandler } from "./$types";
 import { env } from "$env/dynamic/private";
-import { chromium } from "playwright-core";
+import puppeteer from "puppeteer-core";
 
 interface Params {
 	userId: string;
@@ -9,32 +9,31 @@ interface Params {
 	colorScheme: "light" | "dark";
 }
 
-export const POST: RequestHandler = async ({ request }) => {
-	// sleep for 5 seconds TODO: Remove this
-	await new Promise((resolve) => setTimeout(resolve, 5000));
+export const POST: RequestHandler = async ({ request, fetch }) => {
 	const params = (await request.json()) as Params;
-	const pdf = await htmlToPDF(params);
+
+	let html: string = "";
+	const resp = await fetch(
+		`${env.APP_URL}/pdf/${params.userId}/${params.projectId}/${encodeURIComponent(params.date)}`
+	);
+	if (resp.ok) {
+		html = await resp.text();
+		if (params.colorScheme === "light") {
+			html = html.replace('class="dark"', "");
+		}
+	}
+
+	const pdf = await htmlToPDF(html);
 	return new Response(pdf);
 };
 
-const htmlToPDF = async (params: Params) => {
-	const browser = await chromium.launch({
-		executablePath: env.CHROMIUM_PATH,
-		// TODO: Remove headless
-		headless: true,
-	});
+const htmlToPDF = async (html: string) => {
+	const browser = await puppeteer.connect({ browserWSEndpoint: env.BROWSERLESS_ENDPOINT ?? "" });
 	const page = await browser.newPage();
-	await page.emulateMedia({ media: "screen" });
-	await page.emulateMedia({ colorScheme: params.colorScheme });
-	await page.goto(
-		`${env.APP_URL}/pdf/${params.userId}/${params.projectId}/${encodeURIComponent(params.date)}`
-	);
+	page.emulateMediaType("screen");
+	await page.setContent(html);
 	const result = await page.pdf({
-		// format: "",
-		// preferCSSPageSize: true,
-		// height: "100wh",
 		printBackground: true,
-		// margin: { left: "0px", top: "20px", right: "0px", bottom: "0px" },
 	});
 	await browser.close();
 	return result;
