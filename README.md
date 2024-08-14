@@ -18,4 +18,9 @@ pnpm exec playwright install firefox
 pnpm exec playwright install
 ```
 
-## Cloudflare
+## Test Build
+
+```bash
+pnpm build
+ORIGIN=http://localhost:3000 node --env-file=.env build/
+```

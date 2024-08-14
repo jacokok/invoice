@@ -37,7 +37,6 @@
 		"globals": "^15.9.0",
 		"lucia": "^3.2.0",
 		"lucide-svelte": "^0.427.0",
-		"playwright-core": "^1.46.0",
 		"postcss": "^8.4.41",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
@@ -54,5 +53,8 @@
 		"zod": "^3.23.8"
 	},
 	"type": "module",
-	"packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf"
+	"packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf",
+	"dependencies": {
+		"playwright-core": "^1.46.0"
+	}
 }
