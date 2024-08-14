@@ -6,4 +6,5 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
+      APP_URL: http://localhost:3000
       CHROMIUM_PATH: /usr/bin/chromium-browser

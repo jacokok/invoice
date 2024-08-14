@@ -114,3 +114,14 @@
 
 	<div class="h-1" style={backgroundStyle}></div>
 </div>
+
+<style>
+	@page {
+		size: 220mm 298mm;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		width: 210mm;
+		height: 297mm;
+	}
+</style>
