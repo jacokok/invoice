@@ -1,6 +1,6 @@
 import type { RequestHandler } from "./$types";
 import { env } from "$env/dynamic/private";
-import puppeteer from "puppeteer-core";
+import { chromium } from "playwright-core";
 
 interface Params {
 	userId: string;
@@ -28,9 +28,13 @@ export const POST: RequestHandler = async ({ request, fetch }) => {
 };
 
 const htmlToPDF = async (html: string) => {
-	const browser = await puppeteer.connect({ browserWSEndpoint: env.BROWSERLESS_ENDPOINT ?? "" });
+	const browser = await chromium.launch({
+		executablePath: env.CHROMIUM_PATH ?? "",
+		chromiumSandbox: false,
+	});
 	const page = await browser.newPage();
-	page.emulateMediaType("screen");
+	await page.emulateMedia({ media: "screen" });
+	// await page.emulateMedia({ colorScheme: params.colorScheme });
 	await page.setContent(html);
 	const result = await page.pdf({
 		printBackground: true,

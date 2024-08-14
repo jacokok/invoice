@@ -1,4 +1,4 @@
-FROM node:22 AS build
+FROM node:22-alpine AS build
 
 WORKDIR /app
 COPY package*.json .
@@ -10,16 +10,25 @@ COPY . .
 RUN pnpm run build
 RUN pnpm prune --prod
 
-FROM node:22 AS app
+FROM node:22-alpine AS app
 
 WORKDIR /app
+
+ENV NODE_ENV=production \
+    CHROME_BIN="/usr/bin/chromium-browser"
+
+RUN set -x \
+    && apk update \
+    && apk upgrade \
+    && apk add --no-cache \
+    udev \
+    ttf-freefont \
+    chromium    
+
 COPY --from=build /app/build ./build
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 3000
-ENV NODE_ENV=production
 
-# RUN chown -R node /usr/src/app
-# USER node
 CMD [ "node", "build" ]
