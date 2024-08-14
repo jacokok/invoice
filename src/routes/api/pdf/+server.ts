@@ -19,7 +19,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	await page.emulateMedia({ media: "screen" });
 	await page.emulateMedia({ colorScheme: params.colorScheme });
 	await page.goto(
-		`${env.APP_URL}/pdf/${params.userId}/${params.projectId}/${encodeURIComponent(params.date)}`
+		`${env.ORIGIN}/pdf/${params.userId}/${params.projectId}/${encodeURIComponent(params.date)}`
 	);
 	const pdf = await page.pdf({
 		printBackground: true,
