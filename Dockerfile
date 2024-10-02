@@ -7,6 +7,7 @@ RUN set -x \
     && apk upgrade \
     && apk add --no-cache \
     udev \
+    tini \
     ttf-freefont \
     chromium
 
@@ -36,5 +37,6 @@ ENV NODE_ENV='production'
 ENV ORIGIN='http://localhost:3000'
 
 EXPOSE 3000
-
+# Use tini as entry point to kill those zombies
+ENTRYPOINT [ "/sbin/tini", "--" ]
 CMD [ "node", "build" ]
