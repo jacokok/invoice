@@ -17,7 +17,7 @@
 
 	{#if data.projects.length <= 0}
 		<Card.Root>
-			<Card.Header class="flex flex-row items-center gap-2">
+			<Card.Header class="flex flex-row items-center gap-2 pb-6">
 				<div class="flex items-center justify-center rounded-full bg-muted p-2">
 					<EmptyIcon class="size-7" />
 				</div>
@@ -30,7 +30,7 @@
 	{/if}
 
 	{#each data.projects as project}
-		<Card.Root class="flex items-center justify-between">
+		<Card.Root class="flex items-center justify-between pb-6">
 			<Card.Header>
 				<Card.Title>{project.name}</Card.Title>
 				<Card.Description>{project.billName}</Card.Description>
