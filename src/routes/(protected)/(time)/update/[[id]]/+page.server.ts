@@ -47,6 +47,9 @@ export const actions = {
 				...form.data,
 				userId: locals.user?.id,
 			};
+			if (values.id === 0) {
+				values.id = undefined;
+			}
 
 			if (!form.data.id) {
 				// Create
