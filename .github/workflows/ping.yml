@@ -1,0 +1,13 @@
+name: Ping
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl Ping
+        run: curl https://invoice.kontainer.co.za/api/ping
