@@ -28,65 +28,83 @@
 		<Card.Content>
 			<form use:enhance method="POST" action="?/update" class="flex flex-col gap-3">
 				<Form.Field {form} name="invoiceNumber">
-					<Form.Control let:attrs>
-						<Form.Label>Invoice Number</Form.Label>
-						<Input type="number" {...attrs} bind:value={$formData.invoiceNumber} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Invoice Number</Form.Label>
+							<Input type="number" {...props} bind:value={$formData.invoiceNumber} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="name">
-					<Form.Control let:attrs>
-						<Form.Label>Name</Form.Label>
-						<Input {...attrs} bind:value={$formData.name} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Name</Form.Label>
+							<Input {...props} bind:value={$formData.name} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="email">
-					<Form.Control let:attrs>
-						<Form.Label>Email</Form.Label>
-						<Input {...attrs} bind:value={$formData.email} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Email</Form.Label>
+							<Input {...props} bind:value={$formData.email} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="contactNumber">
-					<Form.Control let:attrs>
-						<Form.Label>Contact Number</Form.Label>
-						<Input {...attrs} bind:value={$formData.contactNumber} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Contact Number</Form.Label>
+							<Input {...props} bind:value={$formData.contactNumber} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="address">
-					<Form.Control let:attrs>
-						<Form.Label>Address</Form.Label>
-						<Textarea {...attrs} bind:value={$formData.address} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Address</Form.Label>
+							<Textarea {...props} bind:value={$formData.address} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="bankName">
-					<Form.Control let:attrs>
-						<Form.Label>Bank Name</Form.Label>
-						<Input {...attrs} bind:value={$formData.bankName} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Bank Name</Form.Label>
+							<Input {...props} bind:value={$formData.bankName} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="bankHolderName">
-					<Form.Control let:attrs>
-						<Form.Label>Bank Holder Name</Form.Label>
-						<Input {...attrs} bind:value={$formData.bankHolderName} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Bank Holder Name</Form.Label>
+							<Input {...props} bind:value={$formData.bankHolderName} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="bankBranchCode">
-					<Form.Control let:attrs>
-						<Form.Label>Bank Branch Code</Form.Label>
-						<Input {...attrs} bind:value={$formData.bankBranchCode} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Bank Branch Code</Form.Label>
+							<Input {...props} bind:value={$formData.bankBranchCode} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="bankAccountNumber">
-					<Form.Control let:attrs>
-						<Form.Label>Bank Account Number</Form.Label>
-						<Input {...attrs} bind:value={$formData.bankAccountNumber} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Bank Account Number</Form.Label>
+							<Input {...props} bind:value={$formData.bankAccountNumber} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>

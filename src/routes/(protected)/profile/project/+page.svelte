@@ -3,6 +3,7 @@
 	import EmptyIcon from "lucide-svelte/icons/nut-off";
 	import EllipsisIcon from "lucide-svelte/icons/ellipsis";
 	import DeleteProject from "./DeleteProject.svelte";
+	import { goto } from "$app/navigation";
 
 	let { data } = $props();
 
@@ -37,13 +38,15 @@
 			</Card.Header>
 			<div class="mr-2">
 				<DropdownMenu.Root>
-					<DropdownMenu.Trigger asChild let:builder>
-						<Button variant="outline" size="icon" builders={[builder]}>
+					<DropdownMenu.Trigger>
+						<Button variant="outline" size="icon">
 							<EllipsisIcon class="size-5" />
 						</Button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content>
-						<DropdownMenu.Item href="/profile/project/update/{project.id}">Edit</DropdownMenu.Item>
+						<DropdownMenu.Item onclick={() => goto(`/profile/project/update/${project.id}`)}>
+							Edit
+						</DropdownMenu.Item>
 						<DropdownMenu.Item
 							onclick={() => {
 								deleteConfirm = true;

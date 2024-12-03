@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferSelectModel } from "drizzle-orm";
 import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
 
 export const userTable = sqliteTable("user", {
@@ -16,7 +16,7 @@ export const sessionTable = sqliteTable("session", {
 	userId: text("user_id")
 		.notNull()
 		.references(() => userTable.id),
-	expiresAt: integer("expires_at").notNull(),
+	expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
 });
 
 export const timeTable = sqliteTable("time", {
@@ -64,3 +64,6 @@ export const projectTable = sqliteTable("project", {
 export const projectRelations = relations(timeTable, ({ one }) => ({
 	project: one(projectTable, { fields: [timeTable.projectId], references: [projectTable.id] }),
 }));
+
+export type User = InferSelectModel<typeof userTable>;
+export type Session = InferSelectModel<typeof sessionTable>;

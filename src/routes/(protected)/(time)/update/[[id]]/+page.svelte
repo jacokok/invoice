@@ -62,55 +62,58 @@
 			<form use:enhance method="POST" action="?/upsert" class="flex flex-col gap-3">
 				<input type="hidden" name="id" bind:value={$formData.id} />
 				<Form.Field {form} name="date">
-					<Form.Control let:attrs>
-						<Form.Label>Date</Form.Label>
-						<div class="flex">
-							<Calendar
-								{value}
-								bind:placeholder
-								class="rounded-md border"
-								onValueChange={(v: CalendarDate) => {
-									$formData.date = v.toDate("Africa/Johannesburg");
-								}}
-							/>
-						</div>
-						<input hidden value={$formData.date} name={attrs.name} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Date</Form.Label>
+							<div class="flex">
+								<Calendar
+									{value}
+									bind:placeholder
+									class="rounded-md border"
+									onValueChange={(v: CalendarDate) => {
+										$formData.date = v.toDate("Africa/Johannesburg");
+									}}
+								/>
+							</div>
+							<input hidden value={$formData.date} name={props.name} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="projectId">
-					<Form.Control let:attrs>
-						<Form.Label>Project</Form.Label>
-						<Select.Root
-							selected={selectedProject}
-							onSelectedChange={(v) => {
-								v && ($formData.projectId = Number(v.value));
-							}}
-						>
-							<Select.Trigger {...attrs}>
-								<Select.Value placeholder="Select a project" />
-							</Select.Trigger>
-							<Select.Content>
-								{#each data.projects as project}
-									<Select.Item value={project.id} label={project.name} />
-								{/each}
-							</Select.Content>
-						</Select.Root>
-						<input hidden bind:value={$formData.projectId} name={attrs.name} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Project</Form.Label>
+							<Select.Root bind:value={$formData.projectId} type="single" allowDeselect={false}>
+								<Select.Trigger {...props}>
+									{selectedProject ? selectedProject.label : "Select a project"}
+								</Select.Trigger>
+								<Select.Content>
+									{#each data.projects as project}
+										<Select.Item value={project.id} label={project.name} />
+									{/each}
+								</Select.Content>
+							</Select.Root>
+							<input hidden bind:value={$formData.projectId} name={props.name} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="description">
-					<Form.Control let:attrs>
-						<Form.Label>Description</Form.Label>
-						<Textarea {...attrs} bind:value={$formData.description} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Description</Form.Label>
+							<Textarea {...props} bind:value={$formData.description} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field {form} name="hours">
-					<Form.Control let:attrs>
-						<Form.Label>Hours</Form.Label>
-						<Input type="number" {...attrs} bind:value={$formData.hours} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Hours</Form.Label>
+							<Input type="number" {...props} bind:value={$formData.hours} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>

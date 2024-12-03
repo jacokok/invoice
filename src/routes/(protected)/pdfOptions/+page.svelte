@@ -124,70 +124,60 @@
 			<form use:enhance method="POST" action="?/download" class="flex flex-col gap-3">
 				<input type="hidden" name="userId" bind:value={$formData.userId} />
 				<Form.Field {form} name="date">
-					<Form.Control let:attrs>
-						<Form.Label>Date</Form.Label>
-						<Select.Root
-							selected={selectedDate}
-							onSelectedChange={(v) => {
-								console.log(v);
-								v && ($formData.date = v.value);
-							}}
-						>
-							<Select.Trigger {...attrs}>
-								<Select.Value placeholder="Select a date" />
-							</Select.Trigger>
-							<Select.Content>
-								{#each dates as d}
-									<Select.Item value={d.value} label={d.label} />
-								{/each}
-							</Select.Content>
-						</Select.Root>
-						<input hidden bind:value={$formData.date} name={attrs.name} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Date</Form.Label>
+							<Select.Root bind:value={$formData.date} type="single" allowDeselect={false}>
+								<Select.Trigger {...props}>
+									{selectedDate ? selectedDate.label : "Select a date"}
+								</Select.Trigger>
+								<Select.Content>
+									{#each dates as d}
+										<Select.Item value={d.value} label={d.label} />
+									{/each}
+								</Select.Content>
+							</Select.Root>
+							<input hidden bind:value={$formData.date} name={props.name} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 
 				<Form.Field {form} name="colorScheme">
-					<Form.Control let:attrs>
-						<Form.Label>Color Scheme</Form.Label>
-						<Select.Root
-							selected={selectedColorScheme}
-							onSelectedChange={(v) => {
-								v && ($formData.colorScheme = v.value);
-							}}
-						>
-							<Select.Trigger {...attrs}>
-								<Select.Value placeholder="Select scheme" />
-							</Select.Trigger>
-							<Select.Content>
-								<Select.Item value="dark" label="Dark" />
-								<Select.Item value="light" label="Light" />
-							</Select.Content>
-						</Select.Root>
-						<input hidden bind:value={$formData.colorScheme} name={attrs.name} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Color Scheme</Form.Label>
+							<Select.Root type="single" allowDeselect={false} bind:value={$formData.colorScheme}>
+								<Select.Trigger {...props}>
+									{selectedColorScheme ? selectedColorScheme.label : "Select scheme"}
+								</Select.Trigger>
+								<Select.Content>
+									<Select.Item value="dark" label="Dark" />
+									<Select.Item value="light" label="Light" />
+								</Select.Content>
+							</Select.Root>
+							<input hidden bind:value={$formData.colorScheme} name={props.name} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
 
 				<Form.Field {form} name="projectId">
-					<Form.Control let:attrs>
-						<Form.Label>Project</Form.Label>
-						<Select.Root
-							selected={selectedProject}
-							onSelectedChange={(v) => {
-								v && ($formData.projectId = Number(v.value));
-							}}
-						>
-							<Select.Trigger {...attrs}>
-								<Select.Value placeholder="Select a project" />
-							</Select.Trigger>
-							<Select.Content>
-								{#each data.projects as project}
-									<Select.Item value={project.id} label={project.name} />
-								{/each}
-							</Select.Content>
-						</Select.Root>
-						<input hidden bind:value={$formData.projectId} name={attrs.name} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Project</Form.Label>
+							<Select.Root type="single" allowDeselect={false} bind:value={$formData.projectId}>
+								<Select.Trigger {...props}>
+									{selectedProject ? selectedProject.label : "Select a project"}
+								</Select.Trigger>
+								<Select.Content>
+									{#each data.projects as project}
+										<Select.Item value={project.id} label={project.name} />
+									{/each}
+								</Select.Content>
+							</Select.Root>
+							<input hidden bind:value={$formData.projectId} name={props.name} />
+						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
@@ -197,11 +187,13 @@
 					name="isPreview"
 					class="flex flex-row items-center justify-between rounded-lg border p-4"
 				>
-					<Form.Control let:attrs>
-						<div class="space-y-0.5">
-							<Form.Label>Show Preview</Form.Label>
-						</div>
-						<Switch includeInput {...attrs} bind:checked={$formData.isPreview} />
+					<Form.Control>
+						{#snippet children({ props })}
+							<div class="space-y-0.5">
+								<Form.Label>Show Preview</Form.Label>
+							</div>
+							<Switch {...props} bind:checked={$formData.isPreview} />
+						{/snippet}
 					</Form.Control>
 				</Form.Field>
 

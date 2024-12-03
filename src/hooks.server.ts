@@ -1,40 +1,30 @@
-import { lucia } from "$lib/server/auth";
+import {
+	validateSessionToken,
+	setSessionTokenCookie,
+	deleteSessionTokenCookie,
+} from "$lib/server/session";
 import { redirect, type Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// const startTimer = Date.now();
-	// event.locals.startTimer = startTimer;
-
-	const sessionId = event.cookies.get(lucia.sessionCookieName);
-	const { session, user } = sessionId
-		? await lucia.validateSession(sessionId)
-		: { session: null, user: null };
-
-	if (session && session.fresh) {
-		const sessionCookie = lucia.createSessionCookie(session.id);
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: ".",
-			...sessionCookie.attributes,
-		});
+	const token = event.cookies.get("session") ?? null;
+	if (token === null) {
+		event.locals.user = null;
+		event.locals.session = null;
+		if (event.route.id?.startsWith("/(protected)")) {
+			redirect(302, "/login");
+		}
+		return resolve(event);
 	}
-	if (!session) {
-		const sessionCookie = lucia.createBlankSessionCookie();
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: ".",
-			...sessionCookie.attributes,
-		});
+
+	const { session, user } = await validateSessionToken(token);
+	if (session !== null) {
+		setSessionTokenCookie(event, token, session.expiresAt);
+	} else {
+		deleteSessionTokenCookie(event);
 	}
-	event.locals.user = user;
+
 	event.locals.session = session;
+	event.locals.user = user;
 
-	if (event.route.id?.startsWith("/(protected)")) {
-		if (!user) redirect(302, "/login");
-		// if (!user.verified) redirect(302, '/auth/verify/email');
-	}
-	// if (event.route.id?.startsWith('/(admin)')) {
-	// 	if (user?.role !== 'ADMIN') redirect(302, '/auth/login');
-	// }
-
-	const response = await resolve(event);
-	return response;
+	return resolve(event);
 };

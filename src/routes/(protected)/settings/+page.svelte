@@ -38,7 +38,6 @@
 				<RadioGroup.Item value="light" id="light" />
 				<Label for="light">Light</Label>
 			</div>
-			<RadioGroup.Input name="theme" />
 		</RadioGroup.Root>
 	</Card.Content>
 </Card.Root>

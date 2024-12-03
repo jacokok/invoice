@@ -8,6 +8,7 @@
 	import Pagination from "$lib/components/Pagination.svelte";
 	import CreateIcon from "lucide-svelte/icons/plus";
 	import DownloadIcon from "lucide-svelte/icons/download";
+	import { goto } from "$app/navigation";
 
 	let { data }: { data: PageData } = $props();
 
@@ -48,7 +49,7 @@
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger><EllipsisIcon class="size-5" /></DropdownMenu.Trigger>
 								<DropdownMenu.Content>
-									<DropdownMenu.Item href={`/update/${d.id}`}>
+									<DropdownMenu.Item onclick={() => goto(`/update/${d.id}`)}>
 										<EditIcon class="mr-2 size-5" /> Edit
 									</DropdownMenu.Item>
 									<DropdownMenu.Item

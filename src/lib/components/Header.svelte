@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { invalidateAll } from "$app/navigation";
+	import { goto, invalidateAll } from "$app/navigation";
 	import { Avatar, DropdownMenu } from "@kayord/ui";
-	import type { User } from "lucia";
+	import type { User } from "$lib/types";
 	import Logo from "./Logo.svelte";
 
 	interface Props {
-		user?: User;
+		user: User | null;
 	}
 
 	let { user }: Props = $props();
@@ -34,9 +34,9 @@
 			<DropdownMenu.Group>
 				<DropdownMenu.Label>My Account</DropdownMenu.Label>
 				<DropdownMenu.Separator />
-				<DropdownMenu.Item href="/profile/userDetail">Profile</DropdownMenu.Item>
-				<DropdownMenu.Item href="/settings">Settings</DropdownMenu.Item>
-				<DropdownMenu.Item on:click={logout}>Logout</DropdownMenu.Item>
+				<DropdownMenu.Item onclick={() => goto("/profile/userDetail")}>Profile</DropdownMenu.Item>
+				<DropdownMenu.Item onclick={() => goto("/settings")}>Settings</DropdownMenu.Item>
+				<DropdownMenu.Item onclick={logout}>Logout</DropdownMenu.Item>
 			</DropdownMenu.Group>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>

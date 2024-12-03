@@ -1,11 +1,12 @@
 import { OAuth2RequestError } from "arctic";
-import { generateIdFromEntropySize } from "lucia";
-import { github, lucia } from "$lib/server/auth";
+import { github } from "$lib/server/auth";
+import { generateRandomString, type RandomReader } from "@oslojs/crypto/random";
 
 import { json, type RequestEvent } from "@sveltejs/kit";
 import { db } from "$lib/server";
 import { userTable } from "$lib/schema";
 import { eq } from "drizzle-orm";
+import { createSession, generateSessionToken, setSessionTokenCookie } from "$lib/server/session";
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get("code");
@@ -19,9 +20,10 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
 	try {
 		const tokens = await github.validateAuthorizationCode(code);
+
 		const githubUserResponse = await event.fetch("https://api.github.com/user", {
 			headers: {
-				Authorization: `Bearer ${tokens.accessToken}`,
+				Authorization: `Bearer ${tokens.accessToken()}`,
 				"User-Agent": "invoice",
 			},
 		});
@@ -33,14 +35,18 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		});
 
 		if (existingUser) {
-			const session = await lucia.createSession(existingUser.id, {});
-			const sessionCookie = lucia.createSessionCookie(session.id);
-			event.cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: ".",
-				...sessionCookie.attributes,
-			});
+			const token = generateSessionToken();
+			const session = await createSession(token, existingUser.id);
+			setSessionTokenCookie(event, token, session.expiresAt);
 		} else {
-			const userId = generateIdFromEntropySize(10); // 16 characters long
+			const random: RandomReader = {
+				read(bytes: Uint8Array): void {
+					crypto.getRandomValues(bytes);
+				},
+			};
+
+			const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			const userId = generateRandomString(random, alphabet, 10); // 16 characters long
 
 			// Replace this with your own DB client.
 			await db.insert(userTable).values({
@@ -52,12 +58,9 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				avatar: githubUser.avatar_url,
 			});
 
-			const session = await lucia.createSession(userId, {});
-			const sessionCookie = lucia.createSessionCookie(session.id);
-			event.cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: ".",
-				...sessionCookie.attributes,
-			});
+			const token = generateSessionToken();
+			const session = await createSession(token, userId);
+			setSessionTokenCookie(event, token, session.expiresAt);
 		}
 		return new Response(null, {
 			status: 302,
