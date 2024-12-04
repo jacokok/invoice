@@ -5,6 +5,6 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	preview: {
 		host: true,
-		port: 3000,
+		port: 5173,
 	},
 });
