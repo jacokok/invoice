@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { sqliteTable, text, integer, real, index } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
 
 export const user = sqliteTable("user", {
 	id: text("id").primaryKey(),
@@ -102,50 +102,4 @@ export const accountRelations = relations(account, ({ one }) => ({
 		fields: [account.userId],
 		references: [user.id],
 	}),
-}));
-
-export const time = sqliteTable("time", {
-	id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-	description: text("description").notNull(),
-	hours: integer("hours", { mode: "number" }).notNull(),
-	date: integer("date", { mode: "timestamp" }).notNull(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => user.id),
-	projectId: integer("project_id", { mode: "number" })
-		.notNull()
-		.references(() => project.id),
-});
-
-export const userDetail = sqliteTable("user_detail", {
-	userId: text("user_id")
-		.primaryKey()
-		.notNull()
-		.references(() => user.id),
-	invoiceNumber: integer("invoice_number", { mode: "number" }).notNull(),
-	name: text("name").notNull(),
-	email: text("email").notNull(),
-	contactNumber: text("contact_number").notNull(),
-	address: text("address").notNull(),
-	bankName: text("bank_name").notNull(),
-	bankAccountNumber: text("bank_account_number").notNull(),
-	bankBranchCode: text("bank_branch_code").notNull(),
-	bankHolderName: text("bank_holder_name").notNull(),
-});
-
-export const project = sqliteTable("project", {
-	id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-	name: text("name").notNull(),
-	billName: text("bill_name").notNull(),
-	billAddress: text("bill_address").notNull(),
-	rate: real("rate").notNull(),
-	primaryColorLight: text("primary_color_light").notNull().default("#18181b"),
-	primaryColorDark: text("primary_color_dark").notNull().default("#fafafa"),
-	userId: text("user_id")
-		.notNull()
-		.references(() => user.id),
-});
-
-export const projectRelations = relations(time, ({ one }) => ({
-	project: one(project, { fields: [time.projectId], references: [project.id] }),
 }));

@@ -1,7 +1,7 @@
 import { sqliteTable, AnySQLiteColumn, uniqueIndex, text, foreignKey, integer, real } from "drizzle-orm/sqlite-core"
   import { sql } from "drizzle-orm"
 
-export const user = sqliteTable("user", {
+export const userBak = sqliteTable("user_bak", {
 	id: text().primaryKey().notNull(),
 	githubId: text("github_id"),
 	username: text().notNull(),
@@ -14,23 +14,23 @@ export const user = sqliteTable("user", {
 	uniqueIndex("user_github_id_unique").on(table.githubId),
 ]);
 
-export const session = sqliteTable("session", {
+export const sessionBak = sqliteTable("session_bak", {
 	id: text().primaryKey().notNull(),
-	userId: text("user_id").notNull().references(() => user.id),
+	userId: text("user_id").notNull().references(() => userBak.id),
 	expiresAt: integer("expires_at").notNull(),
 });
 
-export const time = sqliteTable("time", {
+export const timeBak = sqliteTable("time_bak", {
 	id: integer().primaryKey({ autoIncrement: true }).notNull(),
 	description: text().notNull(),
 	hours: integer().notNull(),
-	userId: text("user_id").notNull().references(() => user.id),
+	userId: text("user_id").notNull().references(() => userBak.id),
 	date: integer().notNull(),
-	projectId: integer("project_id").notNull().references(() => project.id),
+	projectId: integer("project_id").notNull().references(() => projectBak.id),
 });
 
-export const userDetail = sqliteTable("user_detail", {
-	userId: text("user_id").primaryKey().notNull().references(() => user.id),
+export const userDetailBak = sqliteTable("user_detail_bak", {
+	userId: text("user_id").primaryKey().notNull().references(() => userBak.id),
 	invoiceNumber: integer("invoice_number").notNull(),
 	name: text().notNull(),
 	email: text().notNull(),
@@ -42,13 +42,13 @@ export const userDetail = sqliteTable("user_detail", {
 	bankHolderName: text("bank_holder_name").notNull(),
 });
 
-export const project = sqliteTable("project", {
+export const projectBak = sqliteTable("project_bak", {
 	id: integer().primaryKey({ autoIncrement: true }).notNull(),
 	name: text().notNull(),
 	billName: text("bill_name").notNull(),
 	billAddress: text("bill_address").notNull(),
 	rate: real().notNull(),
-	userId: text("user_id").notNull().references(() => user.id),
+	userId: text("user_id").notNull().references(() => userBak.id),
 	primaryColorLight: text("primary_color_light").default("#18181b").notNull(),
 	primaryColorDark: text("primary_color_dark").default("#fafafa").notNull(),
 });

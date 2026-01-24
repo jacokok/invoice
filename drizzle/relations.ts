@@ -1,42 +1,42 @@
 import { relations } from "drizzle-orm/relations";
-import { user, session, time, project, userDetail } from "./schema";
+import { userBak, sessionBak, timeBak, projectBak, userDetailBak } from "./schema";
 
-export const sessionRelations = relations(session, ({one}) => ({
-	user: one(user, {
-		fields: [session.userId],
-		references: [user.id]
+export const sessionBakRelations = relations(sessionBak, ({one}) => ({
+	userBak: one(userBak, {
+		fields: [sessionBak.userId],
+		references: [userBak.id]
 	}),
 }));
 
-export const userRelations = relations(user, ({many}) => ({
-	sessions: many(session),
-	times: many(time),
-	userDetails: many(userDetail),
-	projects: many(project),
+export const userBakRelations = relations(userBak, ({many}) => ({
+	sessionBaks: many(sessionBak),
+	timeBaks: many(timeBak),
+	userDetailBaks: many(userDetailBak),
+	projectBaks: many(projectBak),
 }));
 
-export const timeRelations = relations(time, ({one}) => ({
-	user: one(user, {
-		fields: [time.userId],
-		references: [user.id]
+export const timeBakRelations = relations(timeBak, ({one}) => ({
+	userBak: one(userBak, {
+		fields: [timeBak.userId],
+		references: [userBak.id]
 	}),
-	project: one(project, {
-		fields: [time.projectId],
-		references: [project.id]
-	}),
-}));
-
-export const projectRelations = relations(project, ({one, many}) => ({
-	times: many(time),
-	user: one(user, {
-		fields: [project.userId],
-		references: [user.id]
+	projectBak: one(projectBak, {
+		fields: [timeBak.projectId],
+		references: [projectBak.id]
 	}),
 }));
 
-export const userDetailRelations = relations(userDetail, ({one}) => ({
-	user: one(user, {
-		fields: [userDetail.userId],
-		references: [user.id]
+export const projectBakRelations = relations(projectBak, ({one, many}) => ({
+	timeBaks: many(timeBak),
+	userBak: one(userBak, {
+		fields: [projectBak.userId],
+		references: [userBak.id]
+	}),
+}));
+
+export const userDetailBakRelations = relations(userDetailBak, ({one}) => ({
+	userBak: one(userBak, {
+		fields: [userDetailBak.userId],
+		references: [userBak.id]
 	}),
 }));
