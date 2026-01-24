@@ -1,3 +1,6 @@
 {
-    "git.ignoreLimitWarning": true
+	"files.associations": {
+		"*.css": "tailwindcss",
+	},
+	"git.ignoreLimitWarning": true,
 }
