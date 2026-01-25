@@ -1,9 +1,15 @@
 import { createInsertSchema } from "drizzle-zod";
 import { project, time, userDetail } from "$lib/server/db/schema";
+import z from "zod";
+import { desc } from "drizzle-orm";
 
-const insertTimeSchema = createInsertSchema(time, {
-	description: (s) => s.min(1, "Please enter a description"),
-	hours: (s) => s.min(1, "Please enter a positive number"),
+const insertTimeSchema = z.object({
+	id: z.number().optional(),
+	description: z.string().min(1, "Please enter a description"),
+	date: z.string().min(1, "Please enter a date"),
+	hours: z.number().min(0.25, "Please enter hours worked"),
+	projectId: z.number().positive("Please select a project"),
+	userId: z.string().min(1, "Please enter userId"),
 });
 
 const insertUserDetailSchema = createInsertSchema(userDetail, {

@@ -15,7 +15,6 @@ export const getTime = query(pageSchema, async (pageInput) => {
 
 	const skip = page * limit;
 
-	console.log("page", page);
 	const data = await db.query.time.findMany({
 		orderBy: [desc(time.date)],
 		limit: limit,

@@ -18,6 +18,9 @@ importers:
       '@eslint/js':
         specifier: ^9.39.1
         version: 9.39.2
+      '@internationalized/date':
+        specifier: ^3.10.1
+        version: 3.10.1
       '@kayord/ui':
         specifier: ^2.1.8
         version: 2.1.8(135c89511c8d2c2db6f5a2a9299b51fc)
