@@ -1,7 +1,6 @@
 import { auth } from "$lib/server/auth";
 import { svelteKitHandler } from "better-auth/svelte-kit";
 import { building } from "$app/environment";
-import { redirect } from "@sveltejs/kit";
 
 export async function handle({ event, resolve }) {
 	// Fetch current session from Better Auth
@@ -13,8 +12,6 @@ export async function handle({ event, resolve }) {
 	if (session) {
 		event.locals.session = session.session;
 		event.locals.user = session.user;
-	} else if (event.route.id?.startsWith("/(protected)")) {
-		redirect(302, "/login");
 	}
 
 	return svelteKitHandler({ event, resolve, auth, building });

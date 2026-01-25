@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { goto, invalidateAll } from "$app/navigation";
+	import { goto } from "$app/navigation";
 	import { Avatar, DropdownMenu } from "@kayord/ui";
 	import Logo from "./Logo.svelte";
-	import { type Session } from "$lib/auth-client";
+	import { authClient, type Session } from "$lib/auth-client";
 	import { getInitials } from "$lib/util";
 	import { resolve } from "$app/paths";
 
@@ -13,8 +13,7 @@
 	let { session }: Props = $props();
 
 	const logout = async () => {
-		await fetch("/logout", { method: "POST" });
-		await invalidateAll();
+		await authClient.signOut({ fetchOptions: { onSuccess: () => goto(resolve("/login")) } });
 	};
 </script>
 
