@@ -1,15 +1,21 @@
 <script lang="ts">
 	import { Button, Card, Field, Input, Select, Textarea } from "@kayord/ui";
 	import { Calendar } from "@kayord/ui/calendar";
-	import { getLocalTimeZone, parseDate, today, type CalendarDate } from "@internationalized/date";
+	import { getLocalTimeZone, today, parseDate } from "@internationalized/date";
 	// import { insertTimeSchema } from "$lib/dbSchemas";
 	import { page } from "$app/state";
 	import { updateTime, getUpdate } from "./update.remote";
 	import { toast } from "svelte-sonner";
 
-	const data = $derived(await getUpdate(undefined));
+	const id = $derived(page.params?.id ? Number(page.params?.id) : undefined);
+	const data = $derived(await getUpdate(id));
 
-	let open = $state(false);
+	$effect(() => {
+		const item = { ...data.item, date: data.item.date.toString() };
+		if (data.item) updateTime.fields.set(item);
+	});
+
+	// let open = $state(false);
 
 	// const form = superForm(data.form, {
 	// 	validators: zodClient(insertTimeSchema),
@@ -48,9 +54,7 @@
 	// 		: undefined
 	// );
 
-	const id = $derived(page.params?.id ? Number(page.params?.id) : undefined);
-
-	let dateValue = $state(today(getLocalTimeZone()));
+	// let dateValue = $state(today(getLocalTimeZone()));
 </script>
 
 <div class="m-4 flex flex-col gap-2">
@@ -64,7 +68,7 @@
 				class="flex flex-col gap-3"
 				{...updateTime.enhance(async ({ submit, data }) => {
 					try {
-						data.date = dateValue.toDate("Africa/Johannesburg").toString();
+						//data.date = updateTime.fields.date.value();
 						// data.projectId = 23;
 						await submit();
 						if (updateTime.result?.success) {
@@ -79,15 +83,19 @@
 			>
 				<Field.Set>
 					<Field.Group>
-						<Field.Field>
+						<!-- <Field.Field>
 							<Field.Label {...updateTime.fields.date}>Date</Field.Label>
 							<div class="flex">
-								<Calendar bind:value={dateValue} type="single" class="rounded-md border" />
+								<Calendar
+									{...updateTime.fields.date.as("date")}
+									type="single"
+									class="rounded-md border"
+								/>
 							</div>
 							{#each updateTime.fields.date.issues() as issue (issue)}
 								<Field.Error>{issue.message}</Field.Error>
 							{/each}
-						</Field.Field>
+						</Field.Field> -->
 
 						<Field.Field>
 							<Field.Label {...updateTime.fields.projectId}>Project</Field.Label>

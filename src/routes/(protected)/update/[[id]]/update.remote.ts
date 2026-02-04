@@ -3,10 +3,10 @@ import { and, eq } from "drizzle-orm";
 import { db } from "$lib/server/db";
 import { project, time } from "$lib/server/db/schema";
 import { z } from "zod";
-import { insertTimeSchema, insertUserDetailSchema } from "$lib/insertSchema";
+import { insertTimeSchema } from "$lib/insertSchema";
 import { error } from "@sveltejs/kit";
 
-const updateSchema = z.number().min(1).optional();
+const updateSchema = z.number().optional();
 
 export const getUpdate = query(updateSchema, async (id) => {
 	const { locals } = getRequestEvent();

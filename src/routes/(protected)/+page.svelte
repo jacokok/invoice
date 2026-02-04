@@ -21,7 +21,7 @@
 		<Button href="/pdfOptions">
 			<DownloadIcon class="mr-2 size-5" />Generate PDF
 		</Button>
-		<Button href="/update">
+		<Button href="/update/0">
 			<CreateIcon class="mr-2 size-5" />Create
 		</Button>
 	</div>
