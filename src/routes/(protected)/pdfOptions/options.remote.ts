@@ -3,8 +3,7 @@ import { form, getRequestEvent, query } from "$app/server";
 import { and, eq } from "drizzle-orm";
 import { db } from "$lib/server/db";
 import { project, userDetail } from "$lib/server/db/schema";
-import { schema, type FormSchema } from "./schema";
-import { redirect } from "@sveltejs/kit";
+import { schema } from "./schema";
 
 export const getProjects = query(async () => {
 	const { locals } = getRequestEvent();

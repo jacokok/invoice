@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
 	import { Pagination } from "@kayord/ui";
 	import ChevronLeft from "@lucide/svelte/icons/chevron-left";
 	import ChevronRight from "@lucide/svelte/icons/chevron-right";
@@ -12,21 +11,10 @@
 	}
 
 	let { page = $bindable(), count, perPage, siblingCount }: Props = $props();
-
-	const setPage = (p: number) => {
-		page = p;
-	};
 </script>
 
 {#if count > 0}
-	<Pagination.Root
-		{count}
-		{perPage}
-		{siblingCount}
-		onPageChange={(p) => {
-			setPage(p);
-		}}
-	>
+	<Pagination.Root bind:page {count} {perPage} {siblingCount}>
 		{#snippet children({ pages, currentPage })}
 			<Pagination.Content>
 				<Pagination.Item>

@@ -1,5 +1,4 @@
-import { sqliteTable, AnySQLiteColumn, uniqueIndex, text, foreignKey, integer, real } from "drizzle-orm/sqlite-core"
-  import { sql } from "drizzle-orm"
+import { integer, real, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 export const userBak = sqliteTable("user_bak", {
 	id: text().primaryKey().notNull(),
@@ -9,10 +8,9 @@ export const userBak = sqliteTable("user_bak", {
 	avatar: text(),
 	name: text().notNull(),
 	email: text().notNull(),
-},
-(table) => [
-	uniqueIndex("user_github_id_unique").on(table.githubId),
-]);
+	},
+	(table) => [uniqueIndex("user_github_id_unique").on(table.githubId)]
+);
 
 export const sessionBak = sqliteTable("session_bak", {
 	id: text().primaryKey().notNull(),
@@ -52,4 +50,3 @@ export const projectBak = sqliteTable("project_bak", {
 	primaryColorLight: text("primary_color_light").default("#18181b").notNull(),
 	primaryColorDark: text("primary_color_dark").default("#fafafa").notNull(),
 });
-

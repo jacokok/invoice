@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
-	import { isError } from "$lib/types";
+	import { resolve } from "$app/paths";
 	import { toPascalCase } from "$lib/util";
 	import { Button, Card, Field, Label, Loader, Select, Switch } from "@kayord/ui";
 	import { toast } from "@kayord/ui/sonner";
@@ -12,9 +12,9 @@
 	let isLoading = $state(false);
 
 	const getDates = () => {
+		const now = new Date();
 		const months = Array.from({ length: 12 }, (_, i) => {
-			const date = new Date();
-			date.setMonth(date.getMonth() - i);
+			const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
 			return { label: dateToYM(date), value: dateToYM(date, true) };
 		});
 
@@ -73,7 +73,9 @@
 
 	const preview = async (data: FormSchema) => {
 		await goto(
-			`/pdf/${data.userId}/${data.projectId}/${encodeURIComponent(data.date)}?theme=${data.colorScheme}`
+			resolve(
+				`/pdf/${data.userId}/${data.projectId}/${encodeURIComponent(data.date)}?theme=${data.colorScheme}`
+			)
 		);
 	};
 

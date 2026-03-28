@@ -1,7 +1,6 @@
 import { createInsertSchema } from "drizzle-zod";
-import { project, time, userDetail } from "$lib/server/db/schema";
+import { project, userDetail } from "$lib/server/db/schema";
 import z from "zod";
-import { desc } from "drizzle-orm";
 
 const insertTimeSchema = z.object({
 	id: z.coerce.number<string | number>().optional(),

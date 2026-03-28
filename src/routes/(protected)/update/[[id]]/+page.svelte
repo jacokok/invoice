@@ -4,10 +4,11 @@
 	import type { DateValue } from "@internationalized/date";
 	import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 	// import { insertTimeSchema } from "$lib/dbSchemas";
+	import { goto } from "$app/navigation";
+	import { resolve } from "$app/paths";
 	import { page } from "$app/state";
 	import { updateTime, getUpdate } from "./update.remote";
 	import { toast } from "svelte-sonner";
-	import { goto } from "$app/navigation";
 	type UpdateTimeResult = { success: boolean; message: string };
 
 	const id = $derived(page.params?.id ? Number(page.params?.id) : undefined);
@@ -74,7 +75,7 @@
 						const result = updateTime.result as UpdateTimeResult | undefined;
 						if (result?.success) {
 							toast(result.message);
-							goto("/");
+							goto(resolve("/"));
 						} else {
 							toast.error(result?.message ?? "Error updating user details");
 						}

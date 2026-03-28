@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { authClient } from "$lib/auth-client";
+	import { resolve } from "$app/paths";
 	import { Button, DropdownMenu, Table } from "@kayord/ui";
+	import DeleteTime from "./DeleteTime.svelte";
 	import EllipsisIcon from "@lucide/svelte/icons/ellipsis";
 	import EditIcon from "@lucide/svelte/icons/pencil";
 	import TrashIcon from "@lucide/svelte/icons/trash";
-	// import DeleteTime from "./DeleteTime.svelte";
 	import Pagination from "$lib/components/Pagination.svelte";
 	import CreateIcon from "@lucide/svelte/icons/plus";
 	import DownloadIcon from "@lucide/svelte/icons/download";
@@ -14,6 +14,8 @@
 
 	let page = $state(1);
 	const data = $derived(await getTime(page));
+	let deleteConfirm = $state(false);
+	let deleteId = $state(0);
 </script>
 
 <div class="m-2">
@@ -49,17 +51,18 @@
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger><EllipsisIcon class="size-5" /></DropdownMenu.Trigger>
 								<DropdownMenu.Content>
-									<DropdownMenu.Item onclick={() => goto(`/update/${d.id}`)}>
+									<DropdownMenu.Item onclick={() => goto(resolve(`/update/${d.id}`))}>
 										<EditIcon class="mr-2 size-5" /> Edit
 									</DropdownMenu.Item>
-									<!-- <DropdownMenu.Item
+									<DropdownMenu.Item
+										variant="destructive"
 										onclick={() => {
-											deleteConfirm = true;
 											deleteId = d.id;
+											deleteConfirm = true;
 										}}
 									>
 										<TrashIcon class="mr-2 size-5" /> Delete
-									</DropdownMenu.Item> -->
+									</DropdownMenu.Item>
 								</DropdownMenu.Content>
 							</DropdownMenu.Root>
 						</Table.Cell>
@@ -75,4 +78,5 @@
 		<Pagination bind:page count={data.total} perPage={data.limit} />
 	</div>
 </div>
-<!-- <DeleteTime bind:id={deleteId} bind:open={deleteConfirm} /> -->
+
+<DeleteTime bind:id={deleteId} bind:open={deleteConfirm} />
