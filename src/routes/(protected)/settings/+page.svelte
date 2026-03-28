@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Card, Label, RadioGroup } from "@kayord/ui";
-	import { setMode, userPrefersMode } from "@kayord/ui/mode-watcher";
+	import { setMode, userPrefersMode } from "mode-watcher";
 
 	type Mode = "system" | "dark" | "light";
 
@@ -21,7 +21,7 @@
 	</Card.Header>
 	<Card.Content>
 		<RadioGroup.Root
-			value={$userPrefersMode}
+			value={userPrefersMode.current}
 			onValueChange={(value) => {
 				setTheme(value);
 			}}

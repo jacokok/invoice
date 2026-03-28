@@ -1,11 +1,10 @@
 <script lang="ts">
-	import "../app.pcss";
-	import { Toaster } from "@kayord/ui";
-	import { ModeWatcher } from "@kayord/ui/mode-watcher";
-
+	import "../app.css";
+	import favicon from "$lib/assets/favicon.svg";
+	import { Toaster } from "svelte-sonner";
 	let { children } = $props();
 </script>
 
-<ModeWatcher />
+<svelte:head><link rel="icon" href={favicon} /></svelte:head>
 <Toaster />
 {@render children()}

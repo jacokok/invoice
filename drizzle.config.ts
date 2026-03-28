@@ -1,17 +1,16 @@
-import type { Config } from "drizzle-kit";
+import { defineConfig } from "drizzle-kit";
 
-const { DATABASE_URL, DATABASE_AUTH_TOKEN } = process.env;
-if (!DATABASE_URL) {
-	throw new Error("No url");
-}
+if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not set");
 
-export default {
-	schema: "./src/lib/schema.ts",
-	out: "drizzle",
-	driver: "turso",
-	dialect: "sqlite",
+export default defineConfig({
+	schema: "./src/lib/server/db/schema.ts",
+	dialect: "turso",
+
 	dbCredentials: {
-		url: DATABASE_URL,
-		authToken: DATABASE_AUTH_TOKEN,
+		authToken: process.env.DATABASE_AUTH_TOKEN,
+		url: process.env.DATABASE_URL,
 	},
-} satisfies Config;
+
+	verbose: true,
+	strict: true,
+});

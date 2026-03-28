@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cubicInOut } from "svelte/easing";
 	import { crossfade } from "svelte/transition";
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 	import { Button } from "@kayord/ui";
 	import { cn } from "@kayord/ui/utils";
 
@@ -18,10 +18,10 @@
 	];
 </script>
 
-<nav class={"m-2 flex justify-center space-x-2"}>
+<nav class="m-2 flex justify-center space-x-2">
 	<div class="rounded-md bg-muted p-1">
-		{#each items as item}
-			{@const isActive = $page.url.pathname === item.href}
+		{#each items as item (item)}
+			{@const isActive = page.url.pathname === item.href}
 
 			<Button
 				href={item.href}

@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { Button, Card, DropdownMenu } from "@kayord/ui";
-	import EmptyIcon from "lucide-svelte/icons/nut-off";
-	import EllipsisIcon from "lucide-svelte/icons/ellipsis";
+	import EmptyIcon from "@lucide/svelte/icons/nut-off";
+	import EllipsisIcon from "@lucide/svelte/icons/ellipsis";
 	import DeleteProject from "./DeleteProject.svelte";
 	import { goto } from "$app/navigation";
+	import { getProjects } from "./project.remote";
+	import { resolve } from "$app/paths";
 
-	let { data } = $props();
+	const data = $derived(await getProjects());
 
 	let deleteConfirm = $state(false);
 	let deleteId = $state(0);
@@ -30,8 +32,8 @@
 		</Card.Root>
 	{/if}
 
-	{#each data.projects as project}
-		<Card.Root class="flex items-center justify-between pb-6">
+	{#each data.projects as project (project)}
+		<Card.Root class="flex flex-row items-center justify-between  pb-6">
 			<Card.Header>
 				<Card.Title>{project.name}</Card.Title>
 				<Card.Description>{project.billName}</Card.Description>
@@ -44,7 +46,7 @@
 						</Button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content>
-						<DropdownMenu.Item onclick={() => goto(`/profile/project/update/${project.id}`)}>
+						<DropdownMenu.Item onclick={() => goto(resolve(`/update/${project.id}`))}>
 							Edit
 						</DropdownMenu.Item>
 						<DropdownMenu.Item

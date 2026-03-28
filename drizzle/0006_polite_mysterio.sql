@@ -1,1 +1,0 @@
-ALTER TABLE `time` DROP COLUMN `date`;

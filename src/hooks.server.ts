@@ -1,30 +1,18 @@
-import {
-	validateSessionToken,
-	setSessionTokenCookie,
-	deleteSessionTokenCookie,
-} from "$lib/server/session";
-import { redirect, type Handle } from "@sveltejs/kit";
+import { auth } from "$lib/server/auth";
+import { svelteKitHandler } from "better-auth/svelte-kit";
+import { building } from "$app/environment";
 
-export const handle: Handle = async ({ event, resolve }) => {
-	const token = event.cookies.get("session") ?? null;
-	if (token === null) {
-		event.locals.user = null;
-		event.locals.session = null;
-		if (event.route.id?.startsWith("/(protected)")) {
-			redirect(302, "/login");
-		}
-		return resolve(event);
+export async function handle({ event, resolve }) {
+	// Fetch current session from Better Auth
+	const session = await auth.api.getSession({
+		headers: event.request.headers,
+	});
+
+	// Make session and user available on server
+	if (session) {
+		event.locals.session = session.session;
+		event.locals.user = session.user;
 	}
 
-	const { session, user } = await validateSessionToken(token);
-	if (session !== null) {
-		setSessionTokenCookie(event, token, session.expiresAt);
-	} else {
-		deleteSessionTokenCookie(event);
-	}
-
-	event.locals.session = session;
-	event.locals.user = user;
-
-	return resolve(event);
-};
+	return svelteKitHandler({ event, resolve, auth, building });
+}

@@ -5,7 +5,7 @@ export const schema = z.object({
 	date: z.string(),
 	projectId: z.number(),
 	colorScheme: z.string(),
-	isPreview: z.boolean(),
+	isPreview: z.string(),
 });
 
 export type FormSchema = z.infer<typeof schema>;
@@ -15,7 +15,8 @@ export const dateToYM = (date: Date, isValue?: boolean) => {
 	const month = date.toLocaleString("default", { month: "short" });
 	const year = date.getFullYear();
 	if (isValue) {
-		return new Date(`${year}-${month}-${day}`).toLocaleDateString();
+		const numMonth = String(date.getMonth() + 1).padStart(2, "0");
+		return `${year}-${numMonth}-${day}`;
 	} else {
 		return `${month} ${year}`;
 	}

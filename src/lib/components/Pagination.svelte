@@ -1,34 +1,20 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
-	import { page } from "$app/stores";
 	import { Pagination } from "@kayord/ui";
-	import ChevronLeft from "lucide-svelte/icons/chevron-left";
-	import ChevronRight from "lucide-svelte/icons/chevron-right";
+	import ChevronLeft from "@lucide/svelte/icons/chevron-left";
+	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 
 	interface Props {
+		page: number;
 		count: number;
 		perPage?: number;
 		siblingCount?: number;
 	}
 
-	let { count, perPage, siblingCount }: Props = $props();
-
-	const setPage = (p: number) => {
-		const newUrl = new URL($page.url);
-		newUrl?.searchParams?.set("page", String(p));
-		goto(newUrl);
-	};
+	let { page = $bindable(), count, perPage, siblingCount }: Props = $props();
 </script>
 
 {#if count > 0}
-	<Pagination.Root
-		{count}
-		{perPage}
-		{siblingCount}
-		onPageChange={(p) => {
-			setPage(p);
-		}}
-	>
+	<Pagination.Root bind:page {count} {perPage} {siblingCount}>
 		{#snippet children({ pages, currentPage })}
 			<Pagination.Content>
 				<Pagination.Item>
