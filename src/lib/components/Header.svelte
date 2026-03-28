@@ -13,7 +13,7 @@
 	let { session }: Props = $props();
 
 	const logout = async () => {
-		await authClient.signOut({ fetchOptions: { onSuccess: () => goto(resolve("/login")) } });
+		await authClient.signOut({ fetchOptions: { onSuccess: () => goto(resolve("/sign-in")) } });
 	};
 </script>
 

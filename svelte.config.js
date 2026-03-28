@@ -16,6 +16,11 @@ const config = {
 			async: true,
 		},
 	},
+	vitePlugin: {
+		inspector: {
+			showToggleButton: "never",
+		},
+	},
 };
 
 export default config;

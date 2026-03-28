@@ -46,9 +46,7 @@
 						</Button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content>
-						<DropdownMenu.Item
-							onclick={() => goto(resolve(`/profile/project/update/${project.id}`))}
-						>
+						<DropdownMenu.Item onclick={() => goto(resolve(`/update/${project.id}`))}>
 							Edit
 						</DropdownMenu.Item>
 						<DropdownMenu.Item
