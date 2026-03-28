@@ -7,7 +7,7 @@ FROM base AS build
 WORKDIR /app
 COPY package*.json .
 COPY pnpm-lock.yaml .
-RUN pnpm i
+RUN pnpm install --frozen-lockfile
 COPY . .
 
 ENV PUBLIC_ORIGIN='http://localhost:3000'
