@@ -1,19 +1,6 @@
-FROM node:23-alpine AS base
+FROM node:25-alpine AS base
 
-ENV CHROME_BIN="/usr/bin/chromium-browser"
-
-RUN set -x \
-    && apk update \
-    && apk upgrade \
-    && apk add --no-cache \
-    udev \
-    tini \
-    ttf-freefont \
-    chromium
-
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+RUN npm install -g pnpm
 
 FROM base AS build
 
@@ -23,6 +10,9 @@ COPY pnpm-lock.yaml .
 RUN pnpm i
 COPY . .
 
+ENV PUBLIC_ORIGIN='http://localhost:3000'
+ENV DATABASE_URL='libsql://dummy.turso.io'
+ENV DATABASE_AUTH_TOKEN='dummy_token_for_build'
 RUN pnpm run build
 RUN pnpm prune --prod
 
@@ -37,6 +27,4 @@ ENV NODE_ENV='production'
 ENV ORIGIN='http://localhost:3000'
 
 EXPOSE 3000
-# Use tini as entry point to kill those zombies
-ENTRYPOINT [ "/sbin/tini", "--" ]
 CMD [ "node", "build" ]
