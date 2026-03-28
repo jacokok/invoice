@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { Button, Card, Field, Input, Select, Textarea } from "@kayord/ui";
 	import { Calendar } from "@kayord/ui/calendar";
-	import { getLocalTimeZone, today, parseDate } from "@internationalized/date";
+	import type { DateValue } from "@internationalized/date";
+	import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 	// import { insertTimeSchema } from "$lib/dbSchemas";
 	import { page } from "$app/state";
 	import { updateTime, getUpdate } from "./update.remote";
 	import { toast } from "svelte-sonner";
+	import { goto } from "$app/navigation";
+	type UpdateTimeResult = { success: boolean; message: string };
 
 	const id = $derived(page.params?.id ? Number(page.params?.id) : undefined);
 	const data = $derived(await getUpdate(id));
@@ -18,19 +21,31 @@
 	});
 
 	const defaultProjectId = $derived.by(() => {
-		const projectId = updateTime.fields.projectId.value();
-		if (projectId && projectId > 0) {
+		const projectId = Number(updateTime.fields.projectId.value());
+		if (Number.isFinite(projectId) && projectId > 0) {
 			return projectId;
 		}
 		return data?.projects?.[0]?.id ?? 1;
 	});
+
+	const normalizeDateString = (value: unknown) => {
+		if (typeof value !== "string") return "";
+		return value.slice(0, 10);
+	};
+
+	const calendarValue = $derived.by(() => {
+		const value = normalizeDateString(updateTime.fields.date.value());
+		return value ? parseDate(value) : undefined;
+	});
+
+	let placeholder = $state(today(getLocalTimeZone()));
 
 	$effect(() => {
 		if (data?.item) {
 			const dateString =
 				data.item.date instanceof Date
 					? data.item.date.toISOString().split("T")[0]
-					: String(data.item.date);
+					: normalizeDateString(String(data.item.date));
 
 			updateTime.fields.set({
 				id: data.item.id || 0,
@@ -42,47 +57,6 @@
 			});
 		}
 	});
-
-	// let open = $state(false);
-
-	// const form = superForm(data.form, {
-	// 	validators: zodClient(insertTimeSchema),
-	// 	resetForm: false,
-	// 	onUpdated({ form }) {
-	// 		if (form.valid) {
-	// 			open = false;
-	// 			goto("/");
-	// 			toast(form.message);
-	// 		}
-	// 	},
-	// });
-
-	// const { form: formData, enhance } = form;
-
-	// let placeholder = $state(today(getLocalTimeZone()));
-
-	// const value = $derived(
-	// 	$formData.date ? parseDate($formData.date.toISOString().substring(0, 10)) : undefined
-	// );
-
-	// const getProjectLabel = (id: number) => {
-	// 	const project = data.projects.filter((x) => x.id === id);
-	// 	if (project.length > 0) {
-	// 		return project[0].name;
-	// 	}
-	// 	return id.toString();
-	// };
-
-	// const selectedProject = $derived(
-	// 	$formData.projectId > 0
-	// 		? {
-	// 				label: getProjectLabel($formData.projectId),
-	// 				value: $formData.projectId.toString(),
-	// 			}
-	// 		: undefined
-	// );
-
-	// let dateValue = $state(today(getLocalTimeZone()));
 </script>
 
 <div class="m-4 flex flex-col gap-2">
@@ -97,10 +71,12 @@
 				{...updateTime.enhance(async ({ submit }) => {
 					try {
 						await submit();
-						if (updateTime.result?.success) {
-							toast(updateTime.result?.message);
+						const result = updateTime.result as UpdateTimeResult | undefined;
+						if (result?.success) {
+							toast(result.message);
+							goto("/");
 						} else {
-							toast.error(updateTime.result?.message ?? "Error updating user details");
+							toast.error(result?.message ?? "Error updating user details");
 						}
 					} catch {
 						toast.error("Error updating user details");
@@ -112,23 +88,27 @@
 				<input
 					type="hidden"
 					name="date"
-					value={updateTime.fields.date.value() ?? new Date().toISOString().split("T")[0]}
+					value={normalizeDateString(updateTime.fields.date.value()) ||
+						new Date().toISOString().split("T")[0]}
 				/>
 				<Field.Set>
 					<Field.Group>
-						<!-- <Field.Field>
+						<Field.Field>
 							<Field.Label {...updateTime.fields.date}>Date</Field.Label>
 							<div class="flex">
 								<Calendar
-									{...updateTime.fields.date.as("date")}
+									value={calendarValue}
+									bind:placeholder
 									type="single"
 									class="rounded-md border"
+									onValueChange={(value: DateValue | undefined) =>
+										updateTime.fields.date.set(value?.toString() ?? "")}
 								/>
 							</div>
 							{#each updateTime.fields.date.issues() as issue (issue)}
 								<Field.Error>{issue.message}</Field.Error>
 							{/each}
-						</Field.Field> -->
+						</Field.Field>
 
 						<Field.Field>
 							<Field.Label {...updateTime.fields.projectId}>Project</Field.Label>

@@ -7,6 +7,7 @@ import { insertTimeSchema } from "$lib/insertSchema";
 import { error } from "@sveltejs/kit";
 
 const updateSchema = z.number().optional();
+type UpdateTimeResult = { success: boolean; message: string };
 
 export const getUpdate = query(updateSchema, async (id) => {
 	const { locals } = getRequestEvent();
@@ -33,7 +34,7 @@ export const getUpdate = query(updateSchema, async (id) => {
 	return { item, projects };
 });
 
-export const updateTime = form(insertTimeSchema, async (params) => {
+export const updateTime = form(insertTimeSchema, async (params): Promise<UpdateTimeResult> => {
 	const { locals } = getRequestEvent();
 	try {
 		if (locals.user?.id == null) {
@@ -49,7 +50,7 @@ export const updateTime = form(insertTimeSchema, async (params) => {
 			values.id = undefined;
 		}
 
-		if (!params.id) {
+		if (params.id == null || params.id === 0) {
 			// Create
 			await db.insert(time).values(values);
 			return { success: true, message: "Time logged!" };
