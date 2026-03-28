@@ -10,9 +10,37 @@
 	const id = $derived(page.params?.id ? Number(page.params?.id) : undefined);
 	const data = $derived(await getUpdate(id));
 
+	const selectedProjectName = $derived.by(() => {
+		const projectId = updateTime.fields.projectId.value();
+		if (!projectId) return "Select a project";
+		const project = data.projects.find((p) => p.id === Number(projectId));
+		return project?.name ?? "Select a project";
+	});
+
+	const defaultProjectId = $derived.by(() => {
+		const projectId = updateTime.fields.projectId.value();
+		if (projectId && projectId > 0) {
+			return projectId;
+		}
+		return data?.projects?.[0]?.id ?? 1;
+	});
+
 	$effect(() => {
-		const item = { ...data.item, date: data.item.date.toString() };
-		if (data.item) updateTime.fields.set(item);
+		if (data?.item) {
+			const dateString =
+				data.item.date instanceof Date
+					? data.item.date.toISOString().split("T")[0]
+					: String(data.item.date);
+
+			updateTime.fields.set({
+				id: data.item.id || 0,
+				description: data.item.description || "",
+				date: dateString || "",
+				hours: data.item.hours || 1,
+				projectId: data.item.projectId || data.projects[0]?.id || 0,
+				userId: data.item.userId || "",
+			});
+		}
 	});
 
 	// let open = $state(false);
@@ -66,10 +94,8 @@
 		<Card.Content>
 			<form
 				class="flex flex-col gap-3"
-				{...updateTime.enhance(async ({ submit, data }) => {
+				{...updateTime.enhance(async ({ submit }) => {
 					try {
-						//data.date = updateTime.fields.date.value();
-						// data.projectId = 23;
 						await submit();
 						if (updateTime.result?.success) {
 							toast(updateTime.result?.message);
@@ -81,6 +107,13 @@
 					}
 				})}
 			>
+				<input type="hidden" name="id" value={updateTime.fields.id.value() ?? 0} />
+				<input type="hidden" name="userId" value={updateTime.fields.userId.value() ?? ""} />
+				<input
+					type="hidden"
+					name="date"
+					value={updateTime.fields.date.value() ?? new Date().toISOString().split("T")[0]}
+				/>
 				<Field.Set>
 					<Field.Group>
 						<!-- <Field.Field>
@@ -99,8 +132,16 @@
 
 						<Field.Field>
 							<Field.Label {...updateTime.fields.projectId}>Project</Field.Label>
-							<Select.Root {...updateTime} type="single" allowDeselect={false}>
-								<Select.Trigger {...updateTime}>Select a project</Select.Trigger>
+							<input type="hidden" name="projectId" value={defaultProjectId} />
+							<Select.Root
+								value={updateTime.fields.projectId.value()?.toString() ?? ""}
+								type="single"
+								allowDeselect={false}
+								onValueChange={(val) => updateTime.fields.projectId.set(Number(val))}
+							>
+								<Select.Trigger>
+									{selectedProjectName}
+								</Select.Trigger>
 								<Select.Content>
 									{#each data.projects as project (project)}
 										<Select.Item value={project.id.toString()} label={project.name} />

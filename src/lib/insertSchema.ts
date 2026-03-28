@@ -4,11 +4,11 @@ import z from "zod";
 import { desc } from "drizzle-orm";
 
 const insertTimeSchema = z.object({
-	id: z.number().optional(),
+	id: z.coerce.number().optional(),
 	description: z.string().min(1, "Please enter a description"),
 	date: z.string().min(1, "Please enter a date"),
-	hours: z.number().min(0.25, "Please enter hours worked"),
-	projectId: z.number().positive("Please select a project"),
+	hours: z.coerce.number().min(0.25, "Please enter hours worked"),
+	projectId: z.coerce.number().positive("Please select a project"),
 	userId: z.string().min(1, "Please enter userId"),
 });
 
