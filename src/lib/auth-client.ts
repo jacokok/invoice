@@ -1,6 +1,6 @@
 import { createAuthClient } from "better-auth/svelte";
-import { PUBLIC_ORIGIN } from "$env/dynamic/public";
+import { env } from "$env/dynamic/public";
 export const authClient = createAuthClient({
-	baseURL: PUBLIC_ORIGIN,
+	baseURL: env.PUBLIC_ORIGIN,
 });
 export type Session = typeof authClient.$Infer.Session;

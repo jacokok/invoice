@@ -16,14 +16,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build-time placeholders for SvelteKit's postbuild analyse step (runs server code).
-# Override with --build-arg if needed. Runtime values come from environment variables.
-ARG DATABASE_URL=libsql://placeholder.invalid
-ARG DATABASE_AUTH_TOKEN=placeholder
-
-ENV DATABASE_URL=${DATABASE_URL}
-ENV DATABASE_AUTH_TOKEN=${DATABASE_AUTH_TOKEN}
-
 RUN pnpm run build
 
 FROM base AS prod-deps
