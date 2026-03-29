@@ -21,10 +21,10 @@
 <div class="m-2">
 	<div class="flex w-full items-center justify-between py-2 pb-4">
 		<Button href="/pdfOptions">
-			<DownloadIcon class="mr-2 size-5" />Generate PDF
+			<DownloadIcon />Generate PDF
 		</Button>
 		<Button href="/update/0">
-			<CreateIcon class="mr-2 size-5" />Create
+			<CreateIcon />Create
 		</Button>
 	</div>
 
@@ -49,10 +49,10 @@
 						<Table.Cell class="whitespace-pre-line">{d.description}</Table.Cell>
 						<Table.Cell class="text-center">
 							<DropdownMenu.Root>
-								<DropdownMenu.Trigger><EllipsisIcon class="size-5" /></DropdownMenu.Trigger>
+								<DropdownMenu.Trigger><EllipsisIcon class="size-4" /></DropdownMenu.Trigger>
 								<DropdownMenu.Content>
 									<DropdownMenu.Item onclick={() => goto(resolve(`/update/${d.id}`))}>
-										<EditIcon class="mr-2 size-5" /> Edit
+										<EditIcon /> Edit
 									</DropdownMenu.Item>
 									<DropdownMenu.Item
 										variant="destructive"
@@ -61,7 +61,7 @@
 											deleteConfirm = true;
 										}}
 									>
-										<TrashIcon class="mr-2 size-5" /> Delete
+										<TrashIcon /> Delete
 									</DropdownMenu.Item>
 								</DropdownMenu.Content>
 							</DropdownMenu.Root>

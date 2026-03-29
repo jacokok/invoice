@@ -235,11 +235,13 @@
 								<Field.Error>{issue.message}</Field.Error>
 							{/each}
 						</Field.Field>
-
-						<Field.Field class="flex flex-row items-center justify-between rounded-lg border p-4">
-							<Label for="isPreview" class="flex-1">Show Preview</Label>
-							<div class="flex-0">
+						<Field.Field
+							class="flex w-full flex-row items-center justify-between rounded-lg border  p-4"
+						>
+							<Label for="isPreview">Show Preview</Label>
+							<div class="flex flex-0">
 								<Switch
+									class="flex-1"
 									id="isPreview"
 									checked={isPreviewValue}
 									onCheckedChange={(checked) => {
