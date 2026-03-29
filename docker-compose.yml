@@ -6,5 +6,6 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      ORIGIN: http://localhost:3000
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-http://localhost:3000}
+      ORIGIN: ${ORIGIN:-http://localhost:3000}
       CHROMIUM_PATH: /usr/bin/chromium-browser

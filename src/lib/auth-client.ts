@@ -1,5 +1,5 @@
 import { createAuthClient } from "better-auth/svelte";
-import { PUBLIC_ORIGIN } from "$env/static/public";
+import { PUBLIC_ORIGIN } from "$env/dynamic/public";
 export const authClient = createAuthClient({
 	baseURL: PUBLIC_ORIGIN,
 });
