@@ -1,30 +1,47 @@
-FROM node:25 AS base
+FROM node:lts-bookworm-slim AS base
 
-RUN npm install -g pnpm
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+FROM base AS deps
+
+WORKDIR /app
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 
 FROM base AS build
 
 WORKDIR /app
-COPY package*.json .
-COPY pnpm-lock.yaml .
-RUN pnpm install --frozen-lockfile
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV PUBLIC_ORIGIN='http://localhost:3000'
-ENV DATABASE_URL='libsql://dummy.turso.io'
-ENV DATABASE_AUTH_TOKEN='dummy_token_for_build'
+ARG PUBLIC_ORIGIN=http://localhost:3000
+# Build-time placeholders for SvelteKit's postbuild analyse step (runs server code).
+# Override with --build-arg if needed. Runtime values come from environment variables.
+ARG DATABASE_URL=libsql://placeholder.invalid
+ARG DATABASE_AUTH_TOKEN=placeholder
+
+ENV PUBLIC_ORIGIN=${PUBLIC_ORIGIN}
+ENV DATABASE_URL=${DATABASE_URL}
+ENV DATABASE_AUTH_TOKEN=${DATABASE_AUTH_TOKEN}
+
 RUN pnpm run build
-RUN pnpm prune --prod
+
+FROM base AS prod-deps
+
+WORKDIR /app
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile --prod
 
 FROM base
 
 WORKDIR /app
 COPY --from=build /app/build ./build
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/node_modules ./node_modules
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY package.json ./
 
-ENV NODE_ENV='production'
-ENV ORIGIN='http://localhost:3000'
+ENV NODE_ENV=production
 
 EXPOSE 3000
-CMD [ "node", "build" ]
+CMD ["node", "build"]
