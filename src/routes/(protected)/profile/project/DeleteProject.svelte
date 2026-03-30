@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { AlertDialog } from "@kayord/ui";
+	import { deleteProject, getProjects } from "../project/project.remote";
+	import { toast } from "svelte-sonner";
 
 	interface Props {
 		id: number;
@@ -7,6 +9,18 @@
 	}
 
 	let { id = $bindable(0), open = $bindable(false) }: Props = $props();
+
+	const removeProject = async () => {
+		try {
+			await deleteProject(id);
+			await getProjects().refresh();
+		} catch (error) {
+			console.log(error);
+			toast.error("Failed to delete project. Please try again.");
+		} finally {
+			open = false;
+		}
+	};
 </script>
 
 <AlertDialog.Root bind:open>
@@ -19,15 +33,13 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<form method="POST" action="?/delete">
-				<input type="hidden" name="id" value={id} />
-				<AlertDialog.Action
-					type="submit"
-					class="bg-destructive text-destructive-foreground hover:bg-destructive/80"
-				>
-					Delete
-				</AlertDialog.Action>
-			</form>
+			<AlertDialog.Action
+				type="submit"
+				class="bg-destructive text-destructive-foreground hover:bg-destructive/80"
+				onclick={removeProject}
+			>
+				Delete
+			</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>

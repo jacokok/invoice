@@ -25,6 +25,7 @@ const insertUserDetailSchema = createInsertSchema(userDetail, {
 });
 
 const insertProjectSchema = createInsertSchema(project, {
+	userId: (s) => s.optional(),
 	name: (s) => s.min(1, "Please enter a name"),
 	billName: (s) => s.min(1, "Please enter a bill Name"),
 	billAddress: (s) => s.min(1, "Please enter a bill Address"),

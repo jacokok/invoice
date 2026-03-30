@@ -5,6 +5,7 @@
 	import { authClient, type Session } from "$lib/auth-client";
 	import { getInitials } from "$lib/util";
 	import { resolve } from "$app/paths";
+	import { browser } from "$app/environment";
 
 	interface Props {
 		session: Session | null;
@@ -30,7 +31,9 @@
 				<Avatar.Fallback class="bg-primary text-primary-foreground">
 					{getInitials(session?.user.name ?? "")}
 				</Avatar.Fallback>
-				<Avatar.Image src={session?.user.image} />
+				{#if browser}
+					<Avatar.Image src={session?.user.image} />
+				{/if}
 			</Avatar.Root>
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content>

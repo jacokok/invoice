@@ -41,12 +41,16 @@
 			<div class="mr-2">
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger>
-						<Button variant="outline" size="icon">
-							<EllipsisIcon class="size-5" />
-						</Button>
+						{#snippet child({ props })}
+							<Button {...props} variant="outline" size="icon">
+								<EllipsisIcon class="size-5" />
+							</Button>
+						{/snippet}
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content>
-						<DropdownMenu.Item onclick={() => goto(resolve(`/update/${project.id}`))}>
+						<DropdownMenu.Item
+							onclick={() => goto(resolve(`/(protected)/profile/project/update/${project.id}`))}
+						>
 							Edit
 						</DropdownMenu.Item>
 						<DropdownMenu.Item
