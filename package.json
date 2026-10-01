@@ -1,6 +1,7 @@
 {
 	"name": "invoice",
 	"private": true,
+	"packageManager": "pnpm@10.30.3",
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
