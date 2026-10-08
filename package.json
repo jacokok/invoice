@@ -40,6 +40,7 @@
 		"@sveltejs/kit": "^3.0.1",
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
 		"@tailwindcss/vite": "^4.3.3",
+		"@tanstack/svelte-table": "^9.2.6",
 		"@types/node": "^26.6.4",
 		"drizzle-kit": "^0.31.11",
 		"drizzle-zod": "^0.8.3",
