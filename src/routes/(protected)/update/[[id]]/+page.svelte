@@ -167,7 +167,7 @@
 
 					<div class="flex items-center justify-between">
 						<Button variant="secondary" href="/">Cancel</Button>
-						<Button type="submit">
+						<Button type="submit" disabled={updateTime.pending > 0}>
 							{#if id}
 								Update
 							{:else}
@@ -203,75 +203,6 @@
 					</div>
 				</div>
 			{/if}
-			<!-- <form use:enhance method="POST" action="?/upsert" class="flex flex-col gap-3">
-				<input type="hidden" name="id" bind:value={$formData.id} />
-				<Form.Field {form} name="date">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>Date</Form.Label>
-							<div class="flex">
-								<Calendar
-									{value}
-									bind:placeholder
-									class="rounded-md border"
-									onValueChange={(v: CalendarDate) => {
-										$formData.date = v.toDate("Africa/Johannesburg");
-									}}
-								/>
-							</div>
-							<input hidden value={$formData.date} name={props.name} />
-						{/snippet}
-					</Form.Control>
-					<Form.FieldErrors />
-				</Form.Field>
-				<Form.Field {form} name="projectId">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>Project</Form.Label>
-							<Select.Root bind:value={$formData.projectId} type="single" allowDeselect={false}>
-								<Select.Trigger {...props}>
-									{selectedProject ? selectedProject.label : "Select a project"}
-								</Select.Trigger>
-								<Select.Content>
-									{#each data.projects as project}
-										<Select.Item value={project.id} label={project.name} />
-									{/each}
-								</Select.Content>
-							</Select.Root>
-							<input hidden bind:value={$formData.projectId} name={props.name} />
-						{/snippet}
-					</Form.Control>
-					<Form.FieldErrors />
-				</Form.Field>
-				<Form.Field {form} name="description">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>Description</Form.Label>
-							<Textarea {...props} bind:value={$formData.description} />
-						{/snippet}
-					</Form.Control>
-					<Form.FieldErrors />
-				</Form.Field>
-				<Form.Field {form} name="hours">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>Hours</Form.Label>
-							<Input type="number" {...props} bind:value={$formData.hours} />
-						{/snippet}
-					</Form.Control>
-					<Form.FieldErrors />
-				</Form.Field>
-				<div class="flex items-center justify-between">
-					<Button variant="secondary" href="/">Cancel</Button>
-					<Button type="submit">
-						{#if id}
-							Update
-						{:else}
-							Create
-						{/if}
-					</Button>
-				</div>
-			</form> -->
 		</Card.Content>
 	</Card.Root>
 </div>
