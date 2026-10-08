@@ -11,27 +11,29 @@ type UpdateTimeResult = { success: boolean; message: string };
 
 export const getUpdate = query(updateSchema, async (id) => {
 	const { locals } = getRequestEvent();
-	let item = await db.query.time.findFirst({
-		where: and(eq(time.id, Number(id ?? 0)), eq(time.userId, locals.user?.id ?? "")),
-	});
-
 	const projects = await db.query.project.findMany({
 		where: eq(project.userId, locals.user?.id ?? ""),
 	});
 
-	// Default Values
-	if (item == null) {
-		item = {
-			date: new Date(),
-			id: 0,
-			userId: locals.user?.id ?? "",
-			description: "",
-			hours: 1,
-			projectId: projects.length > 0 ? projects[0].id : 0,
-		};
+	const newItem = {
+		date: new Date(),
+		id: 0,
+		userId: locals.user?.id ?? "",
+		description: "",
+		hours: 1,
+		projectId: projects[0]?.id ?? 0,
+	};
+
+	// Creating an entry doesn't need a time-entry lookup.
+	if (id === 0 || id === undefined) {
+		return { item: newItem, projects };
 	}
 
-	return { item, projects };
+	const item = await db.query.time.findFirst({
+		where: and(eq(time.id, id), eq(time.userId, locals.user?.id ?? "")),
+	});
+
+	return { item: item ?? newItem, projects };
 });
 
 export const updateTime = form(insertTimeSchema, async (params): Promise<UpdateTimeResult> => {
