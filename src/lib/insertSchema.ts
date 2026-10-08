@@ -1,5 +1,5 @@
 import { createInsertSchema } from "drizzle-zod";
-import { project, userDetail } from "$lib/server/db/schema";
+import { project, userDetail } from "#lib/server/db/schema.ts";
 import z from "zod";
 
 const insertTimeSchema = z.object({

@@ -1,8 +1,8 @@
 import { error } from "@sveltejs/kit";
 import { form, getRequestEvent, query } from "$app/server";
 import { and, eq } from "drizzle-orm";
-import { db } from "$lib/server/db";
-import { project, userDetail } from "$lib/server/db/schema";
+import { db } from "#lib/server/db/index.ts";
+import { project, userDetail } from "#lib/server/db/schema.ts";
 import { schema } from "./schema";
 
 export const getProjects = query(async () => {

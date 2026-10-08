@@ -1,8 +1,8 @@
 import { form, getRequestEvent, query } from "$app/server";
 import { eq } from "drizzle-orm";
-import { db } from "$lib/server/db";
-import { time, userDetail } from "$lib/server/db/schema";
-import { insertUserDetailSchema } from "$lib/insertSchema";
+import { db } from "#lib/server/db/index.ts";
+import { time, userDetail } from "#lib/server/db/schema.ts";
+import { insertUserDetailSchema } from "#lib/insertSchema.ts";
 import { error } from "@sveltejs/kit";
 
 export const getDetail = query(async () => {

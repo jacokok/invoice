@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
-	import { toPascalCase } from "$lib/util";
+	import { toPascalCase } from "#lib/util.ts";
 	import { Button, Card, Field, Label, Loader, Select, Switch } from "@kayord/ui";
 	import { toast } from "@kayord/ui/sonner";
 	import { dateToYM, type FormSchema } from "./schema";
@@ -73,9 +73,11 @@
 
 	const preview = async (data: FormSchema) => {
 		await goto(
-			resolve(
-				`/pdf/${data.userId}/${data.projectId}/${encodeURIComponent(data.date)}?theme=${data.colorScheme}`
-			)
+			`${resolve("/(public)/pdf/[user]/[project]/[date]", {
+				user: data.userId,
+				project: String(data.projectId),
+				date: data.date,
+			})}?theme=${data.colorScheme}`
 		);
 	};
 
@@ -134,8 +136,7 @@
 						await submit();
 
 						const result = submitPdfOptions.result as
-							| { success: boolean; message: string }
-							| undefined;
+							{ success: boolean; message: string } | undefined;
 						if (!result?.success) {
 							toast.error(result?.message ?? "Could not process invoice options");
 							return;

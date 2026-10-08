@@ -5,7 +5,7 @@
 	import EllipsisIcon from "@lucide/svelte/icons/ellipsis";
 	import EditIcon from "@lucide/svelte/icons/pencil";
 	import TrashIcon from "@lucide/svelte/icons/trash";
-	import Pagination from "$lib/components/Pagination.svelte";
+	import Pagination from "#lib/components/Pagination.svelte";
 	import CreateIcon from "@lucide/svelte/icons/plus";
 	import DownloadIcon from "@lucide/svelte/icons/download";
 	import { goto } from "$app/navigation";
@@ -51,7 +51,10 @@
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger><EllipsisIcon class="size-4" /></DropdownMenu.Trigger>
 								<DropdownMenu.Content>
-									<DropdownMenu.Item onclick={() => goto(resolve(`/update/${d.id}`))}>
+									<DropdownMenu.Item
+										onclick={() =>
+											goto(resolve("/(protected)/update/[[id]]", { id: String(d.id) }))}
+									>
 										<EditIcon /> Edit
 									</DropdownMenu.Item>
 									<DropdownMenu.Item

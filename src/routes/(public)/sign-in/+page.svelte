@@ -1,5 +1,5 @@
 <script>
-	import { authClient } from "$lib/auth-client";
+	import { authClient } from "#lib/auth-client.ts";
 	import { Button, Card } from "@kayord/ui";
 	import CodeIcon from "@lucide/svelte/icons/code";
 </script>

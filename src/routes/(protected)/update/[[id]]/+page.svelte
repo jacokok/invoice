@@ -3,7 +3,6 @@
 	import { Calendar } from "@kayord/ui/calendar";
 	import type { DateValue } from "@internationalized/date";
 	import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
-	// import { insertTimeSchema } from "$lib/dbSchemas";
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
 	import { page } from "$app/state";
@@ -75,7 +74,7 @@
 						const result = updateTime.result as UpdateTimeResult | undefined;
 						if (result?.success) {
 							toast(result.message);
-							goto(resolve("/"));
+							goto(resolve("/(protected)"));
 						} else {
 							toast.error(result?.message ?? "Error updating user details");
 						}

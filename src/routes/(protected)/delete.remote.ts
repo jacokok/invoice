@@ -1,7 +1,7 @@
 import { getRequestEvent, query } from "$app/server";
 import { and, eq } from "drizzle-orm";
-import { db } from "$lib/server/db";
-import { time } from "$lib/server/db/schema";
+import { db } from "#lib/server/db/index.ts";
+import { time } from "#lib/server/db/schema.ts";
 import { error } from "@sveltejs/kit";
 import { z } from "zod";
 

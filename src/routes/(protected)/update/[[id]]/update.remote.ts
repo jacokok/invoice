@@ -1,9 +1,9 @@
 import { form, getRequestEvent, query } from "$app/server";
 import { and, eq } from "drizzle-orm";
-import { db } from "$lib/server/db";
-import { project, time } from "$lib/server/db/schema";
+import { db } from "#lib/server/db/index.ts";
+import { project, time } from "#lib/server/db/schema.ts";
 import { z } from "zod";
-import { insertTimeSchema } from "$lib/insertSchema";
+import { insertTimeSchema } from "#lib/insertSchema.ts";
 import { error } from "@sveltejs/kit";
 
 const updateSchema = z.number().optional();
