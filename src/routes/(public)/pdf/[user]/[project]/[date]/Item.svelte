@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { dateToString } from "$lib/util";
+	import { dateToString } from "#lib/util.ts";
 	import { Separator } from "@kayord/ui";
 
 	let { date, description, hours }: { date: Date; description: string; hours: number } = $props();

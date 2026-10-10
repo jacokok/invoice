@@ -1,10 +1,10 @@
 import { form, getRequestEvent, query } from "$app/server";
 import { and, eq } from "drizzle-orm";
-import { db } from "$lib/server/db";
-import { project } from "$lib/server/db/schema";
+import { db } from "#lib/server/db/index.ts";
+import { project } from "#lib/server/db/schema.ts";
 import { z } from "zod";
 import { error, redirect, isRedirect, isHttpError } from "@sveltejs/kit";
-import { insertProjectSchema } from "$lib/insertSchema";
+import { insertProjectSchema } from "#lib/insertSchema.ts";
 
 export const getProjects = query(async () => {
 	const { locals } = getRequestEvent();

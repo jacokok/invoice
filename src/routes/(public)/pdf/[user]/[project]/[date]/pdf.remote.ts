@@ -1,12 +1,12 @@
 import { getRequestEvent, query } from "$app/server";
 import { eq, and, lte, gte, asc } from "drizzle-orm";
-import { db } from "$lib/server/db";
+import { db } from "#lib/server/db/index.ts";
 import {
 	project as projectTable,
 	userDetail as userDetailTable,
 	time as timeTable,
-} from "$lib/server/db/schema";
-import { firstAndLastDay } from "$lib/util";
+} from "#lib/server/db/schema.ts";
+import { firstAndLastDay } from "#lib/util.ts";
 
 export const getPdf = query(async () => {
 	const { params } = getRequestEvent();

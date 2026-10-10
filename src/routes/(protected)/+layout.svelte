@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ModeWatcher } from "mode-watcher";
-	import { authClient } from "$lib/auth-client.js";
-	import Header from "$lib/components/Header.svelte";
+	import { authClient } from "#lib/auth-client.ts";
+	import Header from "#lib/components/Header.svelte";
 
 	let { children } = $props();
 

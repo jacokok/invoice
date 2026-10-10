@@ -2,10 +2,10 @@
 	import { goto } from "$app/navigation";
 	import { Avatar, DropdownMenu } from "@kayord/ui";
 	import Logo from "./Logo.svelte";
-	import { authClient, type Session } from "$lib/auth-client";
-	import { getInitials } from "$lib/util";
+	import { authClient, type Session } from "#lib/auth-client.ts";
+	import { getInitials } from "#lib/util.ts";
 	import { resolve } from "$app/paths";
-	import { browser } from "$app/environment";
+	import { browser } from "$app/env";
 
 	interface Props {
 		session: Session | null;
@@ -14,12 +14,14 @@
 	let { session }: Props = $props();
 
 	const logout = async () => {
-		await authClient.signOut({ fetchOptions: { onSuccess: () => goto(resolve("/sign-in")) } });
+		await authClient.signOut({
+			fetchOptions: { onSuccess: () => goto(resolve("/(public)/sign-in")) },
+		});
 	};
 </script>
 
 <div class="flex w-full items-center justify-between bg-secondary p-2">
-	<a href={resolve("/")}>
+	<a href={resolve("/(protected)")}>
 		<div class="flex items-center gap-2">
 			<Logo />
 			Invoice
@@ -40,10 +42,12 @@
 			<DropdownMenu.Group>
 				<DropdownMenu.Label>My Account</DropdownMenu.Label>
 				<DropdownMenu.Separator />
-				<DropdownMenu.Item onclick={() => goto(resolve("/profile/userDetail"))}
+				<DropdownMenu.Item onclick={() => goto(resolve("/(protected)/profile/userDetail"))}
 					>Profile</DropdownMenu.Item
 				>
-				<DropdownMenu.Item onclick={() => goto(resolve("/settings"))}>Settings</DropdownMenu.Item>
+				<DropdownMenu.Item onclick={() => goto(resolve("/(protected)/settings"))}
+					>Settings</DropdownMenu.Item
+				>
 				<DropdownMenu.Item onclick={logout}>Logout</DropdownMenu.Item>
 			</DropdownMenu.Group>
 		</DropdownMenu.Content>

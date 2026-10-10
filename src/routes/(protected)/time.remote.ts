@@ -1,7 +1,7 @@
 import { getRequestEvent, query } from "$app/server";
 import { count, desc, eq } from "drizzle-orm";
-import { db } from "$lib/server/db";
-import { time } from "$lib/server/db/schema";
+import { db } from "#lib/server/db/index.ts";
+import { time } from "#lib/server/db/schema.ts";
 import { z } from "zod";
 
 const pageSchema = z.number().min(1).optional();

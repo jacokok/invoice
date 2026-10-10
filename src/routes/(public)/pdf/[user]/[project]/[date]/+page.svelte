@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Avatar, Separator } from "@kayord/ui";
-	import { dateToString, getInitials } from "$lib/util";
+	import { dateToString, getInitials } from "#lib/util.ts";
 	import Section from "./Section.svelte";
 	import Item from "./Item.svelte";
 

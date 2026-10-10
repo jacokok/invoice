@@ -49,7 +49,10 @@
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content>
 						<DropdownMenu.Item
-							onclick={() => goto(resolve(`/(protected)/profile/project/update/${project.id}`))}
+							onclick={() =>
+								goto(
+									resolve("/(protected)/profile/project/update/[[id]]", { id: String(project.id) })
+								)}
 						>
 							Edit
 						</DropdownMenu.Item>
