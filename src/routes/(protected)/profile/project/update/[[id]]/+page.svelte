@@ -39,7 +39,7 @@
 					}
 				})}
 			>
-				<input type="hidden" name="n:id" value={upsertProject.fields.id.value() ?? ""} />
+				<input {...upsertProject.fields.id.as("hidden", upsertProject.fields.id.value() ?? 0)} />
 				<Field.Set>
 					<Field.Group>
 						<Field.Field>

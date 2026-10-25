@@ -1,4 +1,5 @@
-import { getRequestEvent, query } from "$app/server";
+import { query } from "$app/server";
+import { z } from "zod";
 import { eq, and, lte, gte, asc } from "drizzle-orm";
 import { db } from "#lib/server/db/index.ts";
 import {
@@ -8,9 +9,13 @@ import {
 } from "#lib/server/db/schema.ts";
 import { firstAndLastDay } from "#lib/util.ts";
 
-export const getPdf = query(async () => {
-	const { params } = getRequestEvent();
+const schema = z.object({
+	user: z.string().min(1),
+	project: z.coerce.number().int().positive(),
+	date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
 
+export const getPdf = query(schema, async (params) => {
 	const project = await db.query.project.findFirst({
 		where: eq(projectTable.id, Number(params.project)),
 	});

@@ -7,7 +7,13 @@
 	import { getPdf } from "./pdf.remote";
 	import { page } from "$app/state";
 
-	const data = $derived(await getPdf());
+	const data = $derived(
+		await getPdf({
+			user: page.params.user ?? "",
+			project: page.params.project,
+			date: page.params.date ?? "",
+		})
+	);
 
 	const totalHours = $derived.by(() => {
 		let total = 0;

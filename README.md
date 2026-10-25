@@ -28,7 +28,7 @@ pnpm exec playwright install
 pnpm check
 pnpm lint
 pnpm build
-ORIGIN=http://localhost:3000 node --env-file=.env build/
+node --env-file=.env build/
 ```
 
 ## SvelteKit 3
@@ -36,9 +36,22 @@ ORIGIN=http://localhost:3000 node --env-file=.env build/
 Configuration lives in `vite.config.ts`. Library imports use `#lib` with explicit
 file extensions, and runtime environment variables are declared in `src/env.ts`.
 Database credentials are only required when the database is accessed, not to build.
-TypeScript remains on 6.0.2 while the other direct dependencies use current releases.
+The migration follows the [official SvelteKit 3 upgrade guide](https://svelte.dev/docs/kit/migrating-to-sveltekit-3).
+PDF queries receive route parameters explicitly, and remote form controls use
+`field.as(...)` to register submitted fields.
 
-Upstream peer ranges still produce install warnings: Better Auth and Runed declare
-SvelteKit 2 compatibility, and Formsnap declares Superforms 2 compatibility. Type
-checking, linting, production builds, and unauthenticated production smoke tests
-pass; authenticated database and GitHub OAuth flows require your configured services.
+Set `PUBLIC_ORIGIN` to your public-facing origin **before building** (for example,
+`PUBLIC_ORIGIN=https://invoice.example.com pnpm build`). This configures
+`paths.origin` for CSRF checks; adapter-node no longer supports the `ORIGIN`
+runtime variable. Docker Compose passes `PUBLIC_ORIGIN` as both a build argument
+and runtime environment variable. Rebuild when changing it. For local production
+testing, set both `PUBLIC_ORIGIN` and `BETTER_AUTH_URL` in `.env` to
+`http://localhost:3000` before building and starting the server.
+
+TypeScript uses the latest supported 6.x release (6.0.3). TypeScript 7 is not yet
+supported by SvelteKit, svelte-check, or typescript-eslint and breaks Kit's sync
+step. Other direct dependencies use current stable releases.
+
+Upstream peer ranges still produce install warnings: Runed declares SvelteKit 2
+compatibility, and Formsnap declares Superforms 2 compatibility. Authenticated
+database and GitHub OAuth flows require your configured services.

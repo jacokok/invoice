@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { invalidateAll } from "$app/navigation";
+	import { refreshAll } from "$app/navigation";
 	import { AlertDialog } from "@kayord/ui";
 	import { toast } from "svelte-sonner";
 	import { deleteTime } from "./delete.remote";
@@ -28,7 +28,7 @@
 
 			open = false;
 			toast(result.message);
-			await invalidateAll();
+			await refreshAll();
 		} catch {
 			toast.error("Could not delete time entry");
 		} finally {

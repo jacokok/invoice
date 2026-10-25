@@ -16,6 +16,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ARG PUBLIC_ORIGIN
+ENV PUBLIC_ORIGIN=$PUBLIC_ORIGIN
 RUN pnpm run build
 
 FROM base AS prod-deps

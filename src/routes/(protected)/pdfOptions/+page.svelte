@@ -73,11 +73,12 @@
 
 	const preview = async (data: FormSchema) => {
 		await goto(
+			// eslint-disable-next-line svelte/no-navigation-without-resolve -- The route is resolved before appending the query string.
 			`${resolve("/(public)/pdf/[user]/[project]/[date]", {
 				user: data.userId,
 				project: String(data.projectId),
 				date: data.date,
-			})}?theme=${data.colorScheme}`
+			})}?${new URLSearchParams({ theme: data.colorScheme })}`
 		);
 	};
 
