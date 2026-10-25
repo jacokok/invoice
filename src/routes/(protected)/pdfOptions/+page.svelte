@@ -35,40 +35,20 @@
 		submitPdfOptions.fields.set(getDefaultValues());
 	});
 
-	const downloadPDF = async (data: FormSchema) => {
-		await preview(data);
-		// try {
-		// 	isLoading = true;
-		// 	const params = {
-		// 		userId: data.userId,
-		// 		date: data.date,
-		// 		projectId: data.projectId,
-		// 		colorScheme: data.colorScheme,
-		// 	};
-
-		// 	const response = await fetch("/api/pdf", {
-		// 		method: "POST",
-		// 		body: JSON.stringify(params),
-		// 	});
-
-		// 	if (!response.ok) {
-		// 		throw new Error("Network response was not ok");
-		// 	}
-
-		// 	const blob = await response.blob();
-		// 	const downloadUrl = window.URL.createObjectURL(new Blob([blob]));
-		// 	const link = document.createElement("a");
-		// 	link.href = downloadUrl;
-		// 	link.download = "file.pdf";
-		// 	document.body.appendChild(link);
-		// 	link.click();
-		// 	link.parentNode?.removeChild(link);
-		// } catch (err) {
-		// 	const message = isError(err) ? err.message : "Unknown error";
-		// 	toast.error(message);
-		// } finally {
-		// 	isLoading = false;
-		// }
+	const downloadPDF = (pdf: Uint8Array, filename: string) => {
+		const blob = new Blob([new Uint8Array(pdf)], { type: "application/pdf" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = filename;
+		document.body.appendChild(link);
+		try {
+			link.click();
+		} finally {
+			link.remove();
+			// Give the browser time to start reading before releasing the URL.
+			setTimeout(() => URL.revokeObjectURL(url), 1000);
+		}
 	};
 
 	const preview = async (data: FormSchema) => {
@@ -134,22 +114,19 @@
 				{...submitPdfOptions.enhance(async ({ submit }) => {
 					try {
 						isLoading = true;
+						const values = submitPdfOptions.fields.value();
 						await submit();
 
-						const result = submitPdfOptions.result as
-							{ success: boolean; message: string } | undefined;
+						const result = submitPdfOptions.result;
 						if (!result?.success) {
 							toast.error(result?.message ?? "Could not process invoice options");
 							return;
 						}
 
-						const values = submitPdfOptions.fields.value();
-						const isPreview = values.isPreview === "true";
-
-						if (isPreview) {
-							await preview(values as FormSchema);
+						if (result.pdf && result.filename) {
+							downloadPDF(result.pdf, result.filename);
 						} else {
-							await downloadPDF(values as FormSchema);
+							await preview(values as FormSchema);
 						}
 					} catch (err) {
 						console.error("Form handler error:", err);
@@ -198,7 +175,9 @@
 								allowDeselect={false}
 								value={selectedColorScheme?.value}
 								onValueChange={(value) => {
-									submitPdfOptions.fields.colorScheme.set(value);
+									if (value === "light" || value === "dark") {
+										submitPdfOptions.fields.colorScheme.set(value);
+									}
 								}}
 							>
 								<Select.Trigger>

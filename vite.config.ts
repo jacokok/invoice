@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => {
 			}),
 		],
 		ssr: {
-			external: ["@libsql/client"],
+			external: ["@libsql/client", "@formepdf/html"],
 		},
 		optimizeDeps: {
 			exclude: ["@libsql/client"],

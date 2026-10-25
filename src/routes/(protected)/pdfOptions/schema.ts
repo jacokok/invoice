@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 export const schema = z.object({
-	userId: z.string(),
-	date: z.string(),
-	projectId: z.number(),
-	colorScheme: z.string(),
-	isPreview: z.string(),
+	userId: z.string().min(1),
+	date: z.iso.date(),
+	projectId: z.number().int().positive(),
+	colorScheme: z.enum(["light", "dark"]),
+	isPreview: z.enum(["true", "false"]),
 });
 
 export type FormSchema = z.infer<typeof schema>;

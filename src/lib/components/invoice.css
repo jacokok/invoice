@@ -1,0 +1,109 @@
+/* Shared browser/print styles: keep this within Forme's HTML/CSS subset. */
+@page {
+	size: A4;
+	margin: 0;
+}
+
+.invoice {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.invoice h2 {
+	margin: 0;
+	font-size: 16px;
+	font-weight: normal;
+}
+
+.invoice-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.invoice-header {
+	padding: 16px 24px;
+}
+
+.invoice-identity {
+	display: flex;
+	align-items: center;
+}
+
+.invoice-avatar {
+	width: 64px;
+	height: 64px;
+	margin-right: 12px;
+	border-radius: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.invoice-small {
+	font-size: 14px;
+	line-height: 20px;
+}
+
+.invoice-right {
+	text-align: right;
+}
+
+.invoice-bold {
+	font-weight: bold;
+}
+
+.invoice-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.invoice-block {
+	margin: 24px;
+}
+
+.invoice-section {
+	padding: 8px 24px;
+	text-transform: uppercase;
+}
+
+.invoice-item,
+.invoice-summary {
+	break-inside: avoid;
+}
+
+.invoice-item {
+	border-bottom: 1px solid;
+}
+
+.invoice-item-content {
+	padding: 16px 24px;
+}
+
+.invoice-banking {
+	display: grid;
+	grid-template-columns: auto auto;
+	column-gap: 24px;
+}
+
+.invoice-totals-row {
+	gap: 48px;
+}
+
+.invoice-total {
+	margin-top: 12px;
+}
+
+.invoice-total-value {
+	margin: 4px 0;
+	font-size: 24px;
+	line-height: 32px;
+}
+
+.invoice-rule {
+	height: 4px;
+}

@@ -25,11 +25,24 @@ pnpm exec playwright install
 ## Test Build
 
 ```bash
+pnpm test
 pnpm check
 pnpm lint
 pnpm build
 node --env-file=.env build/
 ```
+
+## Invoice PDFs
+
+Preview displays the invoice as HTML. Download uses the `submitPdfOptions`
+remote form to render the same template with `@formepdf/html` (Forme) on the
+server and return PDF bytes for a browser download. No browser service or API
+key is required. Invoice numbers advance only after PDF rendering succeeds.
+
+The shared template and print styles are in `src/lib/components/Invoice.svelte`
+and `src/lib/components/invoice.css`. Keep the styles within Forme's supported
+HTML/CSS subset; rendering warnings are logged on the server. `pnpm test` covers
+both themes, multiline/escaped text, empty invoices, and multi-page rendering.
 
 ## SvelteKit 3
 

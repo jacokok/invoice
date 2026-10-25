@@ -18,6 +18,7 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test": "node --experimental-strip-types --test test/*.test.ts",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"db:push": "drizzle-kit push",
@@ -26,6 +27,7 @@
 		"db:studio": "drizzle-kit studio"
 	},
 	"dependencies": {
+		"@formepdf/html": "^0.29.0",
 		"@libsql/client": "^0.18.0",
 		"better-auth": "^1.7.13",
 		"drizzle-orm": "^0.45.4"
